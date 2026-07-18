@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eval_PF &mdash; Portfolio Health 18 Jul 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --ft-salmon:#FFF1E0;--ft-red:#990F3D;--ft-blue:#0F5499;--ft-navy:#262A33;--ft-warm-blk:#33302E;
+  --ft-border:#CCB799;--ft-mid:#8D775F;--ft-muted:#66605A;--ft-card-bg:#FFFAF4;--ft-card-bdr:#D4A96A;--ft-gold:#F0A500;
+  --bg:var(--ft-salmon);--panel:var(--ft-card-bg);--border:var(--ft-border);--text:var(--ft-warm-blk);--dim:var(--ft-muted);
+  --green:#4B7F3D;--orange:#B5651D;--red:var(--ft-red);--yellow:#B8860B;--blue:var(--ft-blue);--purple:#7C5C99;--teal:#0D7680;
+}
+@media (prefers-color-scheme: dark){:root{--bg:#060d1a;--panel:#0d1a2e;--border:#1a2e4a;--text:#c8d8f0;--dim:#5a7a9a;--green:#4ade80;--orange:#f97316;--red:#ef4444;--yellow:#fbbf24;--blue:#38bdf8;--purple:#a78bfa;--teal:#2dd4bf;}}
+:root[data-theme="dark"]{--bg:#060d1a;--panel:#0d1a2e;--border:#1a2e4a;--text:#c8d8f0;--dim:#5a7a9a;--green:#4ade80;--orange:#f97316;--red:#ef4444;--yellow:#fbbf24;--blue:#38bdf8;--purple:#a78bfa;--teal:#2dd4bf;}
+:root[data-theme="light"]{--bg:var(--ft-salmon);--panel:var(--ft-card-bg);--border:var(--ft-border);--text:var(--ft-warm-blk);--dim:var(--ft-muted);--green:#4B7F3D;--orange:#B5651D;--red:var(--ft-red);--yellow:#B8860B;--blue:var(--ft-blue);--purple:#7C5C99;--teal:#0D7680;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,'Times New Roman',serif;}
+.masthead{background:var(--ft-navy);color:#fff;border-bottom:4px solid var(--ft-red);padding:28px 24px 22px;}
+.masthead h1{margin:0 0 6px;font-size:2rem;letter-spacing:0.3px;}
+.masthead .sub{color:#AAAAAA;font-family:Arial,sans-serif;font-size:0.92rem;}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 20px 60px;}
+.tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:26px;}
+@media(max-width:820px){.tiles{grid-template-columns:repeat(3,1fr);}}
+.tile{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--ft-card-bdr);border-radius:6px;padding:12px 10px;text-align:center;}
+.tile .n{font-size:1.7rem;font-weight:bold;}
+.tile .l{font-family:Arial,sans-serif;font-size:0.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.4px;margin-top:2px;}
+.critical-section{background:#F6DCE0;border:1.5px solid var(--red);border-radius:6px;padding:16px 18px;margin-bottom:26px;}
+.sectiontitle{font-family:Arial,sans-serif;font-weight:bold;font-size:1rem;letter-spacing:0.4px;margin-bottom:10px;}
+.critline{color:#5C0926;padding:6px 0;font-size:0.95rem;border-bottom:1px dashed #d99;}
+.critline:last-child{border-bottom:none;}
+.card{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--ft-card-bdr);border-radius:6px;padding:16px 18px;margin-bottom:18px;}
+.cardtitle{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+.cardtitle .tk{font-size:1.35rem;font-weight:bold;}
+.cardtitle .exp{font-family:Arial,sans-serif;font-size:0.8rem;color:var(--dim);}
+.badge{font-family:Arial,sans-serif;font-size:0.75rem;font-weight:bold;padding:3px 9px;border-radius:12px;white-space:nowrap;}
+.critbox{background:#F6DCE0;border:1.5px solid var(--red);color:#5C0926;border-radius:5px;padding:10px 12px;margin-bottom:12px;font-size:0.92rem;}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 18px;margin-bottom:6px;}
+@media(max-width:700px){.metrics{grid-template-columns:repeat(2,1fr);}}
+.mrow{display:flex;flex-direction:column;gap:2px;}
+.mlabel{font-family:Arial,sans-serif;font-size:0.68rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.3px;}
+.mval{font-size:1rem;}
+.note{font-family:Arial,sans-serif;font-size:0.82rem;color:var(--dim);}
+.warnline{font-family:Arial,sans-serif;font-size:0.88rem;border-radius:5px;padding:9px 12px;margin-top:8px;}
+.warnline.bear{background:#F3E0C9;color:#7A3B0A;border:1px solid var(--orange);}
+.warnline.flip,.warnline.div{background:#F5E8C8;color:#6B4E05;border:1px solid var(--yellow);}
+details{margin-top:12px;}
+summary{font-family:Arial,sans-serif;font-size:0.85rem;cursor:pointer;color:var(--blue);font-weight:bold;}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-family:Arial,sans-serif;font-size:0.78rem;}
+th{background:var(--ft-navy);color:#fff;text-align:left;padding:6px 8px;}
+td{padding:6px 8px;border-bottom:1px solid var(--border);}
+tr:last-child td{font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="masthead">
+  <div class="wrap" style="padding:0;max-width:1000px;margin:0 auto;">
+    <h1>Eval_PF &mdash; Portfolio Health Evaluation</h1>
+    <div class="sub">Data as of 18 Jul 2026 &middot; 15 open put-credit spreads across 14 tickers &middot; Prime Account(50502023)</div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="tiles">
+    <div class="tile"><div class="n" style="color:#990F3D;">1</div><div class="l">Critical</div></div>
+    <div class="tile"><div class="n" style="color:#B5651D;">4</div><div class="l">High Concern</div></div>
+    <div class="tile"><div class="n" style="color:#B8860B;">3</div><div class="l">Watch</div></div>
+    <div class="tile"><div class="n" style="color:#4B7F3D;">7</div><div class="l">Clean</div></div>
+    <div class="tile"><div class="n">15</div><div class="l">Total Spreads</div></div>
+    <div class="tile"><div class="n" style="color:#990F3D;">$-2.45</div><div class="l">Buffer At Risk</div></div>
+  </div>
+  
+    <div class="critical-section">
+      <div class="sectiontitle" style="color:#990F3D;">🚨 CRITICAL POSITIONS &mdash; ACT NOW</div>
+      <div class="critline">🚨 <b>NVDA 24/07/2026 200/205</b>: spot $202.55 below short strike $205 by $2.45. ITM &mdash; close or defend now.</div>
+    </div>
+  
+    <div class="card" style="border-left:5px solid #990F3D;">
+      <div class="cardtitle">
+        <span class="tk">NVDA</span>
+        <span class="exp">PUT 200/205 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 1</span>
+        <span class="badge" style="color:#990F3D;background:#F6DCE0;border:1px solid #990F3D;">🚨 CRITICAL</span>
+      </div>
+      <div class="critbox">
+          🚨 <b>CRITICAL &mdash; NVDA 24/07/2026 200/205</b>: spot $202.55 is below the short strike $205 by $2.45. This spread is ITM. Close or defend now &mdash; every day held past this point compounds the loss.
+        </div>
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#990F3D;">$-2.45 (-1.21%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$202.55</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$204.55 / $209.79</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#990F3D;background:#F6DCE0;border:1px solid #990F3D;">HIGH RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$3.26 / $2.12</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$500.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: spot $202.55 &lt; EMA21 $204.55 &lt; SMA50 $209.79</div>
+      <div class="warnline bear">🔻 BEARISH &mdash; Wyckoff phase confirmed bearish across both of the last 2 sessions (Mark-down &rarr; Mark-down).</div><div class="warnline div">⚠️ <b>DIVERGENCE WARNING</b> &mdash; IV Rank rose 41&rarr;42 over the last 5 sessions while spot fell $203.25&rarr;$201.70.
+        <div class="note" style="margin-top:6px;">news_investigator: Genuine bearish catalysts, not noise: Singapore fraud probe widened to servers potentially containing Nvidia chips (~Jul 17); NVDA named in Netlist's new ITC probe into Samsung HBM/DDR5 supply; Nvidia tightened export-control “whitelist” vetting for Asian buyers (Jul 14) &mdash; reportedly over half of past customers failed vetting; stock down ~3.4% Jul 13 and ~2.7% Jul 17, now on a 6-session relative-weakness streak (longest since Sep 2025), ~23% off its May 14 high; China competition (Moonshot AI, DeepSeek in-house chip) reviving capex-cut fears.</div></div>
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>40.1%</td><td>41</td><td>121.4M</td><td>0.83x</td><td>👓 Second Test</td></tr><tr><td>15/07</td><td>40.3%</td><td>42</td><td>124.3M</td><td>0.85x</td><td>🚀 BULLISH</td></tr><tr><td>16/07</td><td>39.6%</td><td>39</td><td>124.8M</td><td>0.86x</td><td>🚀 BULLISH</td></tr><tr><td>17/07</td><td>40.4%</td><td>42</td><td>3.32M</td><td>0.02x</td><td>🔍 First Test</td></tr><tr><td>18/07</td><td>40.4%</td><td>42</td><td>3.32M</td><td>0.02x</td><td>🔍 First Test</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$203.53</td><td>$202.5</td><td>$195.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$211.8</td><td>$202.5</td><td>$200.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$212.5</td><td>$212.5</td><td>$210</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$207.4</td><td>$205</td><td>$210</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>18/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$202.81</td><td>$205.0</td><td>$205.0</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #B5651D;">
+      <div class="cardtitle">
+        <span class="tk">AMZN</span>
+        <span class="exp">PUT 237.5/240 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 1</span>
+        <span class="badge" style="color:#B5651D;background:#F3E0C9;border:1px solid #B5651D;">🔻 HIGH CONCERN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$6.74 (2.73%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$246.74</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$245.19 / $252.66</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$2.87 / $2.27</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$250.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: wide-buffer override (buffer $6.74 &gt; $5) &mdash; EMA/SMA read skipped</div>
+      <div class="warnline bear">🔻 BEARISH &mdash; Wyckoff phase confirmed bearish across both of the last 2 sessions (Mark-down &rarr; Mark-down).</div>
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>44.2%</td><td>77</td><td>34.6M</td><td>0.56x</td><td>👓 Second Test</td></tr><tr><td>15/07</td><td>43.8%</td><td>76</td><td>30.1M</td><td>0.48x</td><td>👓 Second Test</td></tr><tr><td>16/07</td><td>43.9%</td><td>76</td><td>45.2M</td><td>0.75x</td><td>🚀 BULLISH</td></tr><tr><td>17/07</td><td>44.0%</td><td>76</td><td>622K</td><td>0.01x</td><td>👓 Second Test</td></tr><tr><td>18/07</td><td>44.0%</td><td>76</td><td>622K</td><td>0.01x</td><td>👓 Second Test</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$247.31</td><td>$250.0</td><td>$245.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$247.49</td><td>$250.0</td><td>$245.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$254.96</td><td>$250</td><td>$245</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$249.89</td><td>$255</td><td>$255</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$247.23</td><td>$255.0</td><td>$255.0</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #B5651D;">
+      <div class="cardtitle">
+        <span class="tk">MSFT</span>
+        <span class="exp">PUT 375/377.5 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 1</span>
+        <span class="badge" style="color:#B5651D;background:#F3E0C9;border:1px solid #B5651D;">🔻 HIGH CONCERN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$16.51 (4.19%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$394.01</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$387.61 / $401.86</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$3.70 / $3.11</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$250.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: wide-buffer override (buffer $16.51 &gt; $5) &mdash; EMA/SMA read skipped</div>
+      <div class="warnline bear">🔻 BEARISH &mdash; Wyckoff phase confirmed bearish across both of the last 2 sessions (Mark-down &rarr; Mark-down).</div>
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>44.4%</td><td>100</td><td>28.9M</td><td>0.60x</td><td>🔍 First Test</td></tr><tr><td>15/07</td><td>45.6%</td><td>100</td><td>27.9M</td><td>0.58x</td><td>—</td></tr><tr><td>16/07</td><td>46.5%</td><td>100</td><td>36.3M</td><td>0.77x</td><td>🔍 First Test</td></tr><tr><td>17/07</td><td>46.2%</td><td>99</td><td>527K</td><td>0.01x</td><td>🔍 First Test</td></tr><tr><td>18/07</td><td>46.2%</td><td>99</td><td>527K</td><td>0.01x</td><td>🔍 First Test</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$390.99</td><td>$400.0</td><td>$380.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$384.93</td><td>$390.0</td><td>$380.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$395.63</td><td>$400</td><td>$385</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$401.1</td><td>$400</td><td>$367.5</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$393.82</td><td>$400.0</td><td>$367.5</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #B5651D;">
+      <div class="cardtitle">
+        <span class="tk">MSFT</span>
+        <span class="exp">PUT 380/382.5 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 1</span>
+        <span class="badge" style="color:#B5651D;background:#F3E0C9;border:1px solid #B5651D;">🔻 HIGH CONCERN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$11.51 (2.92%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$394.01</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$387.61 / $401.86</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$4.61 / $3.88</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$250.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: wide-buffer override (buffer $11.51 &gt; $5) &mdash; EMA/SMA read skipped</div>
+      <div class="warnline bear">🔻 BEARISH &mdash; Wyckoff phase confirmed bearish across both of the last 2 sessions (Mark-down &rarr; Mark-down).</div>
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>44.4%</td><td>100</td><td>28.9M</td><td>0.60x</td><td>🔍 First Test</td></tr><tr><td>15/07</td><td>45.6%</td><td>100</td><td>27.9M</td><td>0.58x</td><td>—</td></tr><tr><td>16/07</td><td>46.5%</td><td>100</td><td>36.3M</td><td>0.77x</td><td>🔍 First Test</td></tr><tr><td>17/07</td><td>46.2%</td><td>99</td><td>527K</td><td>0.01x</td><td>🔍 First Test</td></tr><tr><td>18/07</td><td>46.2%</td><td>99</td><td>527K</td><td>0.01x</td><td>🔍 First Test</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$390.99</td><td>$400.0</td><td>$380.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$384.93</td><td>$390.0</td><td>$380.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$395.63</td><td>$400</td><td>$385</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$401.1</td><td>$400</td><td>$367.5</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$393.82</td><td>$400.0</td><td>$367.5</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #B5651D;">
+      <div class="cardtitle">
+        <span class="tk">NBIS</span>
+        <span class="exp">PUT 167.5/170 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 2</span>
+        <span class="badge" style="color:#B5651D;background:#F3E0C9;border:1px solid #B5651D;">🔻 HIGH CONCERN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$7.93 (4.46%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$177.93</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$224.93 / $224.89</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$9.63 / $8.77</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$500.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: wide-buffer override (buffer $7.93 &gt; $5) &mdash; EMA/SMA read skipped</div>
+      <div class="warnline bear">🔻 BEARISH &mdash; Wyckoff phase confirmed bearish across both of the last 2 sessions (Mark-down &rarr; Mark-down).</div>
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>139.4%</td><td>100</td><td>10.8M</td><td>0.60x</td><td>🔍 First Test</td></tr><tr><td>15/07</td><td>146.1%</td><td>100</td><td>17.9M</td><td>1.01x</td><td>🔍 First Test</td></tr><tr><td>16/07</td><td>147.2%</td><td>100</td><td>18.8M</td><td>1.06x</td><td>🔍 First Test</td></tr><tr><td>17/07</td><td>150.6%</td><td>100</td><td>848K</td><td>0.05x</td><td>🔍 First Test</td></tr><tr><td>18/07</td><td>150.6%</td><td>100</td><td>848K</td><td>0.05x</td><td>🔍 First Test</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$210.51</td><td>$250.0</td><td>$175.0</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>15/07</td><td>Mark-down</td><td>Strong downtrend</td><td>[MARKDOWN] (70%)</td><td>$194.09</td><td>$220.0</td><td>$170.0</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>16/07</td><td>Mark-down</td><td>Strong downtrend</td><td>[MARKDOWN] (70%)</td><td>$199.51</td><td>$220</td><td>$170</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>17/07</td><td>Mark-down</td><td>Strong downtrend</td><td>[MARKDOWN] (70%)</td><td>$171.77</td><td>$190</td><td>$170</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>18/07</td><td>Mark-down</td><td>Strong downtrend</td><td>[MARKDOWN] (70%)</td><td>$177.71</td><td>$220.0</td><td>$170.0</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #B8860B;">
+      <div class="cardtitle">
+        <span class="tk">CSCO</span>
+        <span class="exp">PUT 105/107 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 2</span>
+        <span class="badge" style="color:#B8860B;background:#F5E8C8;border:1px solid #B8860B;">⚠️ WATCH</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$4.70 (4.21%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$111.70</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$116.55 / $115.60</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#B5651D;background:#F3E0C9;border:1px solid #B5651D;">MED RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$1.80 / $1.14</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$400.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: spot $111.70 &lt; EMA21 $116.55 (SMA50 $115.60)</div>
+      <div class="warnline div">⚠️ <b>DIVERGENCE WARNING</b> &mdash; IV Rank rose 90&rarr;99 over the last 5 sessions while spot fell $118.97&rarr;$110.17.
+        <div class="note" style="margin-top:6px;">news_investigator: Post-rally profit-taking: CSCO fell ~4.2% Jul 15 and ~3.0% Jul 16 after a big post-earnings run; D.A. Davidson trimmed its position (Jul 16); downgrades cite slowing campus switching demand and AI-networking competitive overhang. GuruFocus still flags CSCO as overvalued. No earnings miss/guidance cut/litigation found in the window &mdash; divergence looks like mean-reversion + downgrade pressure, not a discrete shock.</div></div>
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>46.8%</td><td>90</td><td>17.6M</td><td>0.68x</td><td>🚀 BULLISH</td></tr><tr><td>15/07</td><td>49.5%</td><td>98</td><td>21.9M</td><td>0.85x</td><td>🚀 BULLISH</td></tr><tr><td>16/07</td><td>52.1%</td><td>100</td><td>23.8M</td><td>0.93x</td><td>🔍 First Test</td></tr><tr><td>17/07</td><td>51.7%</td><td>99</td><td>25.2M</td><td>0.97x</td><td>🔍 First Test</td></tr><tr><td>18/07</td><td>51.7%</td><td>99</td><td>25.2M</td><td>0.97x</td><td>🔍 First Test</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$119.25</td><td>$124.0</td><td>$115.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$117.09</td><td>$124.0</td><td>$115.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$111.77</td><td>$118</td><td>$106</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-down</td><td>Strong downtrend</td><td>[MARKDOWN] (70%)</td><td>$109.66</td><td>$110</td><td>$106</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>18/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$111.94</td><td>$110.0</td><td>$106.0</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #B8860B;">
+      <div class="cardtitle">
+        <span class="tk">FDX</span>
+        <span class="exp">PUT 307.5/310 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 2</span>
+        <span class="badge" style="color:#B8860B;background:#F5E8C8;border:1px solid #B8860B;">⚠️ WATCH</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$4.00 (1.27%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$314.00</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$313.64 / $318.17</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$3.40 / $2.67</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$500.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: spot $314.00 &gt; EMA21 $313.64</div>
+      <div class="warnline flip">⚠️ TREND CHANGE WARNING &mdash; Wyckoff phase flipped bearish on the most recent session (Mark-up &rarr; Mark-down); single-day flip, watch for confirmation.</div>
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>32.2%</td><td>46</td><td>1.57M</td><td>0.67x</td><td>👓 Second Test</td></tr><tr><td>15/07</td><td>30.1%</td><td>39</td><td>1.44M</td><td>0.61x</td><td>👓 Second Test</td></tr><tr><td>16/07</td><td>30.8%</td><td>41</td><td>1.47M</td><td>0.63x</td><td>🔍 First Test</td></tr><tr><td>17/07</td><td>33.5%</td><td>51</td><td>1.44M</td><td>0.63x</td><td>👓 Second Test</td></tr><tr><td>18/07</td><td>33.5%</td><td>51</td><td>1.44M</td><td>0.63x</td><td>👓 Second Test</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-down</td><td>Strong downtrend</td><td>[MARKDOWN] (70%)</td><td>$313.74</td><td>$307.5</td><td>$310.0</td><td>Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>15/07</td><td>Mark-down</td><td>Strong downtrend</td><td>[MARKDOWN] (70%)</td><td>$313.66</td><td>$307.5</td><td>$310.0</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>16/07</td><td>Mark-down</td><td>Strong downtrend</td><td>[MARKDOWN] (70%)</td><td>$313.42</td><td>$307.5</td><td>$310</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>17/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$318.2</td><td>$345</td><td>$310</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr><tr><td>18/07</td><td>Mark-down</td><td>Strong downtrend</td><td>[MARKDOWN] (70%)</td><td>$312.98</td><td>$307.5</td><td>$310.0</td><td>Very Short</td><td>⚠ HIGH VOL RISK</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #B8860B;">
+      <div class="cardtitle">
+        <span class="tk">HPE</span>
+        <span class="exp">PUT 42/44 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 1</span>
+        <span class="badge" style="color:#B8860B;background:#F5E8C8;border:1px solid #B8860B;">⚠️ WATCH</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$1.95 (4.24%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$45.95</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$46.08 / $42.63</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#B5651D;background:#F3E0C9;border:1px solid #B5651D;">MED RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$1.18 / $0.64</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$200.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: spot $45.95 &lt; EMA21 $46.08 (SMA50 $42.63)</div>
+      <div class="warnline div">⚠️ <b>DIVERGENCE WARNING</b> &mdash; IV Rank rose 44&rarr;48 over the last 5 sessions while spot fell $46.96&rarr;$44.83.
+        <div class="note" style="margin-top:6px;">news_investigator: Post-rally profit-taking (~-6.2% one session) unwinding a prior ~14% surge, inside a broader AI-hardware sector selloff. Analyst downgrade to Hold on margin pressure and muted segment growth; FY26 guidance (5&ndash;10% revenue growth) seen as weak vs AI-infra peers. No fresh HPE-specific shock (earnings/lawsuit/exec exit) confirmed inside the last 2 weeks.</div></div>
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>71.5%</td><td>44</td><td>18.4M</td><td>0.75x</td><td>🚀 BULLISH</td></tr><tr><td>15/07</td><td>73.1%</td><td>46</td><td>17.1M</td><td>0.71x</td><td>🚀 BULLISH</td></tr><tr><td>16/07</td><td>76.0%</td><td>49</td><td>19.9M</td><td>0.83x</td><td>🚀 BULLISH</td></tr><tr><td>17/07</td><td>75.2%</td><td>48</td><td>27.3M</td><td>1.16x</td><td>👓 Second Test</td></tr><tr><td>18/07</td><td>75.2%</td><td>48</td><td>27.3M</td><td>1.16x</td><td>👓 Second Test</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$47.24</td><td>$50.0</td><td>$46.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$49.56</td><td>$50.0</td><td>$46.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$47.39</td><td>$50</td><td>$46</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$45.13</td><td>$50</td><td>$46</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$45.82</td><td>$50.0</td><td>$46.0</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #4B7F3D;">
+      <div class="cardtitle">
+        <span class="tk">ABBV</span>
+        <span class="exp">PUT 245/247.5 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 1</span>
+        <span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">✅ CLEAN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$7.64 (2.99%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$255.14</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$241.26 / $227.14</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$2.19 / $1.56</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$250.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: wide-buffer override (buffer $7.64 &gt; $5) &mdash; EMA/SMA read skipped</div>
+      
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>30.3%</td><td>68</td><td>4.14M</td><td>0.44x</td><td>🚀 BULLISH</td></tr><tr><td>15/07</td><td>29.5%</td><td>64</td><td>5.25M</td><td>0.54x</td><td>🚀 BULLISH</td></tr><tr><td>16/07</td><td>31.8%</td><td>77</td><td>6.39M</td><td>0.67x</td><td>🚀 BULLISH</td></tr><tr><td>17/07</td><td>29.9%</td><td>66</td><td>6.56M</td><td>0.68x</td><td>🚀 BULLISH</td></tr><tr><td>18/07</td><td>29.9%</td><td>66</td><td>6.56M</td><td>0.68x</td><td>🚀 BULLISH</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$248.0</td><td>$250.0</td><td>$247.5</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$244.78</td><td>$250.0</td><td>$247.5</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$244.11</td><td>$245</td><td>$247.5</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$254.39</td><td>$260</td><td>$247.5</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$254.49</td><td>$260.0</td><td>$252.5</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #4B7F3D;">
+      <div class="cardtitle">
+        <span class="tk">AMGN</span>
+        <span class="exp">PUT 357.5/360 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 1</span>
+        <span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">✅ CLEAN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$6.35 (1.73%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$366.35</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$357.23 / $345.77</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$3.37 / $2.64</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$250.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: wide-buffer override (buffer $6.35 &gt; $5) &mdash; EMA/SMA read skipped</div>
+      
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>32.7%</td><td>78</td><td>2.06M</td><td>0.69x</td><td>🚀 BULLISH</td></tr><tr><td>15/07</td><td>33.4%</td><td>82</td><td>1.86M</td><td>0.65x</td><td>👓 Second Test</td></tr><tr><td>16/07</td><td>33.0%</td><td>80</td><td>1.84M</td><td>0.66x</td><td>🚀 BULLISH</td></tr><tr><td>17/07</td><td>33.5%</td><td>83</td><td>2.36M</td><td>0.90x</td><td>🚀 BULLISH</td></tr><tr><td>18/07</td><td>33.5%</td><td>83</td><td>2.36M</td><td>0.90x</td><td>🚀 BULLISH</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$360.45</td><td>$360.0</td><td>$365.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$355.25</td><td>$360.0</td><td>$365.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$358.32</td><td>$360</td><td>$365</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$371.58</td><td>$360</td><td>$365</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$366.29</td><td>$375.0</td><td>$365.0</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #4B7F3D;">
+      <div class="cardtitle">
+        <span class="tk">CL</span>
+        <span class="exp">PUT 89/91 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 2</span>
+        <span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">✅ CLEAN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$1.88 (2.02%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$92.88</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$91.65 / $90.07</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$1.26 / $0.63</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$400.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: spot $92.88 &gt; EMA21 $91.65</div>
+      
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>26.9%</td><td>70</td><td>3.91M</td><td>0.73x</td><td>🚀 BULLISH</td></tr><tr><td>15/07</td><td>26.2%</td><td>66</td><td>3.77M</td><td>0.70x</td><td>👓 Second Test</td></tr><tr><td>16/07</td><td>25.8%</td><td>63</td><td>3.47M</td><td>0.65x</td><td>👓 Second Test</td></tr><tr><td>17/07</td><td>26.7%</td><td>69</td><td>3.52M</td><td>0.69x</td><td>🚀 BULLISH</td></tr><tr><td>18/07</td><td>26.7%</td><td>69</td><td>3.52M</td><td>0.69x</td><td>🚀 BULLISH</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$93.21</td><td>$96.0</td><td>$88.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$91.03</td><td>$93.0</td><td>$93.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$91.47</td><td>$93</td><td>$93</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$94.07</td><td>$93</td><td>$93</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$92.98</td><td>$93.0</td><td>$90.0</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #4B7F3D;">
+      <div class="cardtitle">
+        <span class="tk">CVS</span>
+        <span class="exp">PUT 101/103 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 1</span>
+        <span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">✅ CLEAN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$4.67 (4.34%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$107.67</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$102.69 / $97.78</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$1.21 / $0.73</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$200.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: spot $107.67 &gt; EMA21 $102.69</div>
+      
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>38.1%</td><td>67</td><td>7.2M</td><td>0.87x</td><td>🚀 BULLISH</td></tr><tr><td>15/07</td><td>38.2%</td><td>67</td><td>11.4M</td><td>1.47x</td><td>🚀 BULLISH</td></tr><tr><td>16/07</td><td>37.9%</td><td>66</td><td>6.94M</td><td>0.87x</td><td>🚀 BULLISH</td></tr><tr><td>17/07</td><td>39.0%</td><td>71</td><td>12M</td><td>1.45x</td><td>🚀 BULLISH</td></tr><tr><td>18/07</td><td>39.0%</td><td>71</td><td>12M</td><td>1.45x</td><td>🚀 BULLISH</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$105.9</td><td>$100.0</td><td>$104.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$106.18</td><td>$100.0</td><td>$104.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$105.91</td><td>$100</td><td>$104</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$106.5</td><td>$107</td><td>$105</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$107.47</td><td>$107.0</td><td>$105.0</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #4B7F3D;">
+      <div class="cardtitle">
+        <span class="tk">CVX</span>
+        <span class="exp">PUT 180/182.5 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 2</span>
+        <span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">✅ CLEAN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$5.41 (2.88%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$187.91</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$176.88 / $181.97</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$1.22 / $0.68</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$500.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: wide-buffer override (buffer $5.41 &gt; $5) &mdash; EMA/SMA read skipped</div>
+      
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>29.8%</td><td>77</td><td>7.68M</td><td>0.76x</td><td>🚀 BULLISH</td></tr><tr><td>15/07</td><td>29.2%</td><td>73</td><td>6.82M</td><td>0.68x</td><td>👓 Second Test</td></tr><tr><td>16/07</td><td>28.8%</td><td>70</td><td>6.67M</td><td>0.68x</td><td>👓 Second Test</td></tr><tr><td>17/07</td><td>28.3%</td><td>67</td><td>34K</td><td>0.00x</td><td>🚀 BULLISH</td></tr><tr><td>18/07</td><td>28.3%</td><td>67</td><td>34K</td><td>0.00x</td><td>🚀 BULLISH</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$182.2</td><td>$185.0</td><td>$175.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$181.76</td><td>$185.0</td><td>$175.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-down</td><td>Downtrend continuation</td><td>[DOWNTREND] (60%)</td><td>$181.6</td><td>$185</td><td>$175</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$183.86</td><td>$185</td><td>$175</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$187.38</td><td>$187.5</td><td>$175.0</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #4B7F3D;">
+      <div class="cardtitle">
+        <span class="tk">GILD</span>
+        <span class="exp">PUT 129/131 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 1</span>
+        <span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">✅ CLEAN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$3.30 (2.46%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$134.30</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$129.77 / $129.89</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$1.73 / $1.10</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$200.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: spot $134.30 &gt; EMA21 $129.77</div>
+      
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>33.1%</td><td>60</td><td>5.11M</td><td>0.59x</td><td>🚀 BULLISH</td></tr><tr><td>15/07</td><td>32.3%</td><td>56</td><td>5.26M</td><td>0.61x</td><td>🌱 Greenshoots</td></tr><tr><td>16/07</td><td>32.6%</td><td>58</td><td>4.47M</td><td>0.53x</td><td>🚀 BULLISH</td></tr><tr><td>17/07</td><td>33.8%</td><td>64</td><td>7.93M</td><td>0.96x</td><td>🚀 BULLISH</td></tr><tr><td>18/07</td><td>33.8%</td><td>64</td><td>7.93M</td><td>0.96x</td><td>🚀 BULLISH</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$131.4</td><td>$135.0</td><td>$126.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$130.04</td><td>$135.0</td><td>$130.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$131.7</td><td>$134</td><td>$134</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$136.3</td><td>$134</td><td>$135</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$134.28</td><td>$137.0</td><td>$131.0</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+    <div class="card" style="border-left:5px solid #4B7F3D;">
+      <div class="cardtitle">
+        <span class="tk">PG</span>
+        <span class="exp">PUT 147/149 &middot; exp 24/07/2026 &middot; DTE 7 &middot; qty 2</span>
+        <span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">✅ CLEAN</span>
+      </div>
+      
+      <div class="metrics">
+        <div class="mrow"><span class="mlabel">Buffer</span><span class="mval" style="color:#33302E;">$1.21 (0.81%)</span></div>
+        <div class="mrow"><span class="mlabel">Spot</span><span class="mval">$150.21</span></div>
+        <div class="mrow"><span class="mlabel">EMA21 / SMA50</span><span class="mval">$148.16 / $146.53</span></div>
+        <div class="mrow"><span class="mlabel">EMA/SMA Flag</span><span class="badge" style="color:#4B7F3D;background:#E3EDDB;border:1px solid #4B7F3D;">LOW RISK</span></div>
+        <div class="mrow"><span class="mlabel">Credit (short/long avg)</span><span class="mval">$2.18 / $1.44</span></div>
+        <div class="mrow"><span class="mlabel">Margin</span><span class="mval">$400.00</span></div>
+      </div>
+      <div class="note" style="margin:6px 0 10px;">EMA/SMA read: spot $150.21 &gt; EMA21 $148.16</div>
+      
+      <details>
+        <summary>5-day IV/Volume &amp; Wyckoff/GEX history</summary>
+        <table>
+          <tr><th>Date</th><th>IV Implied</th><th>IV Rank</th><th>Volume</th><th>Vol Ratio</th><th>Trend Flag</th></tr>
+          <tr><td>14/07</td><td>26.3%</td><td>78</td><td>7.82M</td><td>0.79x</td><td>🔍 First Test</td></tr><tr><td>15/07</td><td>26.2%</td><td>77</td><td>7.67M</td><td>0.75x</td><td>—</td></tr><tr><td>16/07</td><td>26.4%</td><td>78</td><td>6.18M</td><td>0.61x</td><td>🔍 First Test</td></tr><tr><td>17/07</td><td>27.3%</td><td>85</td><td>6.49M</td><td>0.66x</td><td>🚀 BULLISH</td></tr><tr><td>18/07</td><td>27.3%</td><td>85</td><td>6.49M</td><td>0.66x</td><td>🚀 BULLISH</td></tr>
+        </table>
+        <table style="margin-top:10px;">
+          <tr><th>Date</th><th>Wyckoff Phase</th><th>Pattern</th><th>Setup/Conf</th><th>Spot</th><th>Call Wall</th><th>Put Wall</th><th>GEX Class</th><th>Badge</th></tr>
+          <tr><td>14/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$148.37</td><td>$150.0</td><td>$140.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>15/07</td><td>Distribution</td><td>Upthrust detected</td><td>[UPTHRUST] (SOW) (85%)</td><td>$146.08</td><td>$150.0</td><td>$140.0</td><td>Very Long</td><td>PINNED</td></tr><tr><td>16/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$148.05</td><td>$150</td><td>$140</td><td>Very Long</td><td>PINNED</td></tr><tr><td>17/07</td><td>Mark-up</td><td>Strong uptrend</td><td>[MARKUP] (70%)</td><td>$151.5</td><td>$150</td><td>$150</td><td>Very Long</td><td>PINNED</td></tr><tr><td>18/07</td><td>Mark-up</td><td>Uptrend continuation</td><td>[UPTREND] (60%)</td><td>$149.98</td><td>$150.0</td><td>$146.0</td><td>Very Long</td><td>PINNED</td></tr>
+        </table>
+      </details>
+    </div>
+    
+</div>
+</body>
+</html>
