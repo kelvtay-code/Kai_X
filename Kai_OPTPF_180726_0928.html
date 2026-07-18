@@ -29,13 +29,18 @@ a{color:var(--ft-blue);}
 .hubnav a:hover{color:#fff;border-bottom-color:var(--ft-red);}
 .hubnav a.active{color:#fff;border-bottom-color:var(--ft-red);}
 
-.masthead{background:var(--ft-navy);color:#fff;border-bottom:4px solid var(--ft-red);padding:22px 24px 16px;}
+.masthead{background:var(--ft-navy);color:#fff;border-bottom:4px solid var(--ft-red);border-radius:4px;padding:18px 20px 14px;max-width:1320px;margin:20px auto 0;}
 .masthead-inner{max-width:1320px;margin:0 auto;}
 .masthead-eyebrow{font-family:Arial,sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#AAAAAA;margin-bottom:6px;}
-.masthead-title{font-size:2rem;font-weight:700;letter-spacing:-0.01em;}
+.masthead-title{font-family:Georgia,'Times New Roman',serif;font-size:1.7rem;font-weight:700;letter-spacing:-0.01em;}
 .masthead-title span{color:var(--ft-gold);}
 .masthead-date{font-family:Arial,sans-serif;font-size:11px;color:#AAAAAA;margin-top:6px;}
-.masthead-tagline{font-style:italic;font-size:12px;color:#CCCCCC;border-top:1px solid #44495A;padding-top:8px;margin-top:10px;}
+.masthead-tagline{font-style:italic;font-size:12px;color:#CCCCCC;border-top:1px solid #44495A;padding-top:8px;margin-top:8px;}
+.stats-banner{background:var(--ft-red);padding:8px 20px;max-width:1320px;margin:0 auto;}
+.stats-inner{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.stat-item{font-family:Arial,sans-serif;font-size:12px;color:#fff;display:flex;align-items:center;gap:6px;}
+.stat-item strong{font-weight:700;}
+.stat-sep{color:rgba(255,255,255,0.4);}
 
 nav.section-nav{background:var(--ft-navy);padding:0 24px;border-bottom:1px solid #44495A;}
 nav.section-nav .nav-inner{max-width:1320px;margin:0 auto;display:flex;gap:0;overflow-x:auto;}
@@ -126,13 +131,22 @@ footer{background:var(--ft-navy);color:#888;font-family:Arial,sans-serif;font-si
   </div>
 </nav>
 <div class="masthead">
-  <div class="masthead-inner">
-    <div class="masthead-eyebrow">Optionx Intelligence &mdash; Kai_PF</div>
-    <div class="masthead-title">Kai <span>PF</span></div>
-    <div class="masthead-date">Data: 18 Jul 2026, 09:28 SGT &nbsp;&middot;&nbsp; Built: 18 Jul 2026</div>
-    <div class="masthead-tagline">"/ivchk premium-capture read, /top7 seven-day confluence, ticker headlines and a risk-focused negative watch &mdash; full context on the portfolio's ticker universe."</div>
-  </div>
+  <div class="masthead-eyebrow">Optionx Intelligence &mdash; Kai_PF</div>
+  <div class="masthead-title">Kai <span>PF</span></div>
+  <div class="masthead-date">Data: 18 Jul 2026, 09:28 SGT &nbsp;&middot;&nbsp; Built: 18 Jul 2026</div>
+  <div class="masthead-tagline">"/ivchk premium-capture read, /top7 seven-day confluence, ticker headlines and a risk-focused negative watch &mdash; full context on the portfolio's ticker universe."</div>
 </div>
+<div class="stats-banner"><div class="stats-inner">
+  <div class="stat-item">Universe <strong>14</strong></div>
+  <span class="stat-sep">|</span>
+  <div class="stat-item">Bull Setup <strong>7</strong></div>
+  <span class="stat-sep">|</span>
+  <div class="stat-item">Reject <strong>4</strong></div>
+  <span class="stat-sep">|</span>
+  <div class="stat-item">Abort <strong>3</strong></div>
+  <span class="stat-sep">|</span>
+  <div class="stat-item">Earnings Risk (0&ndash;7d) <strong>0</strong></div>
+</div></div>
 <div class="universe-card">
   <table>
     <thead><tr><th>Sector</th><th>Tickers</th></tr></thead>
