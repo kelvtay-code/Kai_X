@@ -16,9 +16,17 @@
 :root[data-theme="light"]{--bg:var(--ft-salmon);--panel:var(--ft-card-bg);--border:var(--ft-border);--text:var(--ft-warm-blk);--dim:var(--ft-muted);--green:#4B7F3D;--orange:#B5651D;--red:var(--ft-red);--yellow:#B8860B;--blue:var(--ft-blue);--purple:#7C5C99;--teal:#0D7680;}
 *{box-sizing:border-box;}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,'Times New Roman',serif;}
-.masthead{background:var(--ft-navy);color:#fff;border-bottom:4px solid var(--ft-red);padding:28px 24px 22px;}
-.masthead h1{margin:0 0 6px;font-size:2rem;letter-spacing:0.3px;}
-.masthead .sub{color:#AAAAAA;font-family:Arial,sans-serif;font-size:0.92rem;}
+.masthead{background:var(--ft-navy);color:#fff;border-bottom:4px solid var(--ft-red);border-radius:4px;padding:18px 20px 14px;margin:20px 20px 0;}
+.masthead-eyebrow{font-family:Arial,sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#AAAAAA;margin-bottom:6px;}
+.masthead-title{font-family:Georgia,'Times New Roman',serif;font-size:1.7rem;font-weight:700;letter-spacing:-0.01em;}
+.masthead-title span{color:var(--ft-gold);}
+.masthead-date{font-family:Arial,sans-serif;font-size:11px;color:#AAAAAA;margin-top:6px;}
+.masthead-tagline{font-style:italic;font-size:12px;color:#CCCCCC;border-top:1px solid #44495A;padding-top:8px;margin-top:8px;}
+.stats-banner{background:var(--ft-red);padding:8px 20px;margin:0 20px;}
+.stats-inner{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.stat-item{font-family:Arial,sans-serif;font-size:12px;color:#fff;display:flex;align-items:center;gap:6px;}
+.stat-item strong{font-weight:700;}
+.stat-sep{color:rgba(255,255,255,0.4);}
 .wrap{max-width:1000px;margin:0 auto;padding:24px 20px 60px;}
 .hubhead{background:var(--ft-navy);padding:0 24px;}
 .hubhead-inner{max-width:1000px;margin:0 auto;padding:8px 0 6px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
@@ -88,25 +96,27 @@ tr:last-child td{font-weight:bold;}
     <a class="active" href="Eval_PF_180726_0930.html">Evaluator</a>
   </div>
 </nav>
-<div class="hub-subheader">
-  <div class="hub-sublabel">Evaluator &middot; Daily Scan</div>
-</div>
 <div class="masthead">
-  <div class="wrap" style="padding:0;max-width:1000px;margin:0 auto;">
-    <h1>Eval_PF &mdash; Portfolio Health Evaluation</h1>
-    <div class="sub">Data as of 18 Jul 2026 &middot; 15 open put-credit spreads across 14 tickers</div>
-  </div>
+  <div class="masthead-eyebrow">Optionx Intelligence &mdash; Evaluator</div>
+  <div class="masthead-title">Portfolio <span>Health</span> Evaluation</div>
+  <div class="masthead-date">Data as of 18 Jul 2026 &nbsp;&middot;&nbsp; 15 open put-credit spreads across 14 tickers</div>
+  <div class="masthead-tagline">"Flags positions where spot has breached or is approaching the short strike &mdash; screened for EMA/SMA risk flags, IV/spot divergence and bearish Wyckoff turns before the loss compounds."</div>
 </div>
+<div class="stats-banner"><div class="stats-inner">
+  <div class="stat-item">Critical <strong>1</strong></div>
+  <span class="stat-sep">|</span>
+  <div class="stat-item">High Concern <strong>4</strong></div>
+  <span class="stat-sep">|</span>
+  <div class="stat-item">Watch <strong>3</strong></div>
+  <span class="stat-sep">|</span>
+  <div class="stat-item">Clean <strong>7</strong></div>
+  <span class="stat-sep">|</span>
+  <div class="stat-item">Total Spreads <strong>15</strong></div>
+  <span class="stat-sep">|</span>
+  <div class="stat-item">Buffer At Risk <strong>$-2.45</strong></div>
+</div></div>
 <div class="wrap">
-  <div class="tiles">
-    <div class="tile"><div class="n" style="color:#990F3D;">1</div><div class="l">Critical</div></div>
-    <div class="tile"><div class="n" style="color:#B5651D;">4</div><div class="l">High Concern</div></div>
-    <div class="tile"><div class="n" style="color:#B8860B;">3</div><div class="l">Watch</div></div>
-    <div class="tile"><div class="n" style="color:#4B7F3D;">7</div><div class="l">Clean</div></div>
-    <div class="tile"><div class="n">15</div><div class="l">Total Spreads</div></div>
-    <div class="tile"><div class="n" style="color:#990F3D;">$-2.45</div><div class="l">Buffer At Risk</div></div>
-  </div>
-  
+
     <div class="critical-section">
       <div class="sectiontitle" style="color:#990F3D;">🚨 CRITICAL POSITIONS &mdash; ACT NOW</div>
       <div class="critline">🚨 <b>NVDA 24/07/2026 200/205</b>: spot $202.55 below short strike $205 by $2.45. ITM &mdash; close or defend now.</div>
