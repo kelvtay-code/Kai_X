@@ -2,45 +2,89 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Kai_X &mdash; Reviews</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optionx Hub &mdash; Kai_X</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>
 :root{
   --ft-salmon:#FFF1E0;--ft-red:#990F3D;--ft-blue:#0F5499;--ft-navy:#262A33;--ft-warm-blk:#33302E;
-  --ft-border:#CCB799;--ft-mid:#8D775F;--ft-muted:#66605A;--ft-card-bg:#FFFAF4;--ft-card-bdr:#D4A96A;
-  --bg:var(--ft-salmon);--panel:var(--ft-card-bg);--border:var(--ft-border);--text:var(--ft-warm-blk);--dim:var(--ft-muted);
+  --ft-border:#CCB799;--ft-mid:#8D775F;--ft-muted:#66605A;--ft-card-bg:#FFFAF4;--ft-card-bdr:#D4A96A;--ft-gold:#F0A500;
 }
-@media (prefers-color-scheme: dark){:root{--bg:#060d1a;--panel:#0d1a2e;--border:#1a2e4a;--text:#c8d8f0;--dim:#5a7a9a;}}
-:root[data-theme="dark"]{--bg:#060d1a;--panel:#0d1a2e;--border:#1a2e4a;--text:#c8d8f0;--dim:#5a7a9a;}
-:root[data-theme="light"]{--bg:var(--ft-salmon);--panel:var(--ft-card-bg);--border:var(--ft-border);--text:var(--ft-warm-blk);--dim:var(--ft-muted);}
 *{box-sizing:border-box;}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,'Times New Roman',serif;}
-.masthead{background:var(--ft-navy);color:#fff;border-bottom:4px solid var(--ft-red);padding:28px 24px 22px;}
-.masthead h1{margin:0 0 6px;font-size:2rem;letter-spacing:0.3px;}
-.masthead .sub{color:#AAAAAA;font-family:Arial,sans-serif;font-size:0.92rem;}
-.wrap{max-width:800px;margin:0 auto;padding:24px 20px 60px;}
-.card{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--ft-card-bdr);border-radius:6px;padding:18px 20px;margin-bottom:16px;display:block;text-decoration:none;color:var(--text);transition:transform .1s;}
-.card:hover{transform:translateY(-2px);}
-.card .tk{font-size:1.2rem;font-weight:bold;}
-.card .note{font-family:Arial,sans-serif;font-size:0.82rem;color:var(--dim);margin-top:4px;}
+body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--ft-salmon);color:var(--ft-warm-blk);font-size:14px;line-height:1.5;}
+
+.masthead{background:var(--ft-navy);color:#fff;padding:0 24px;border-bottom:4px solid var(--ft-red);position:sticky;top:0;z-index:5;}
+.masthead-inner{max-width:1320px;margin:0 auto;padding:8px 0 6px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.masthead-eyebrow{font-family:Arial,sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#AAAAAA;margin-bottom:2px;}
+.masthead-title{font-size:1.25rem;font-weight:700;letter-spacing:-0.01em;}
+.masthead-title span{color:var(--ft-gold);}
+.hub-freshness{display:flex;gap:10px;flex-wrap:wrap;}
+.hub-fresh-item{display:flex;align-items:center;gap:5px;font-family:Arial,sans-serif;}
+.hub-fresh-dot{width:8px;height:8px;border-radius:50%;background:#3fce6e;box-shadow:0 0 0 3px rgba(63,206,110,0.25);flex:none;}
+.hub-fresh-ts{font-size:0.66rem;color:#fff;}
+
+nav.section-nav{background:var(--ft-navy);padding:0 24px;border-bottom:1px solid #44495A;}
+nav.section-nav .nav-inner{max-width:1320px;margin:0 auto;display:flex;gap:0;overflow-x:auto;}
+nav.section-nav button{font-family:Arial,sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;
+  color:#AAAAAA;background:none;border:none;padding:10px 16px;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;}
+nav.section-nav button:hover{color:#fff;border-bottom-color:var(--ft-red);}
+nav.section-nav button.active{color:#fff;border-bottom-color:var(--ft-red);}
+
+main{max-width:1320px;margin:0 auto;padding:16px 24px 40px;}
+section{display:none;}
+section.active{display:block;}
+.open-full{font-family:Arial,sans-serif;font-size:0.8rem;color:var(--ft-blue);text-decoration:none;font-weight:600;display:inline-block;margin-bottom:10px;}
+.open-full:hover{text-decoration:underline;}
+section iframe{width:100%;height:calc(100vh - 190px);min-height:600px;border:1px solid var(--ft-border);background:#fff;display:block;}
+
+footer{background:var(--ft-navy);color:#888;font-family:Arial,sans-serif;font-size:11px;text-align:center;padding:16px 24px;margin-top:0;border-top:3px solid var(--ft-red);}
+
+@media(max-width:700px){
+  .masthead,nav.section-nav,main{padding-left:14px;padding-right:14px;}
+  .masthead-eyebrow{display:none;}
+  .masthead-title{font-size:1.05rem;}
+}
 </style>
 </head>
 <body>
 <div class="masthead">
-  <div class="wrap" style="padding:0;max-width:800px;margin:0 auto;">
-    <h1>Kai_X &mdash; Reviews</h1>
-    <div class="sub">Latest reports</div>
+  <div class="masthead-inner">
+    <div>
+      <div class="masthead-eyebrow">Optionx Intelligence</div>
+      <div class="masthead-title">Optionx <span>Hub</span></div>
+    </div>
+    <div class="hub-freshness">
+      <div class="hub-fresh-item">
+        <span class="hub-fresh-dot"></span>
+        <div class="hub-fresh-ts">18 Jul 2026</div>
+      </div>
+    </div>
   </div>
 </div>
-<div class="wrap">
-  <a class="card" href="Eval_PF_180726_0930.html">
-    <div class="tk">Eval_PF &mdash; Portfolio Health Evaluation</div>
-    <div class="note">Data as of 18 Jul 2026 &middot; latest run</div>
-  </a>
-  <a class="card" href="Kai_OPTPF_180726_0928.html">
-    <div class="tk">Kai OPTPF &mdash; Options Portfolio Dashboard</div>
-    <div class="note">18 Jul 2026</div>
-  </a>
-</div>
+<nav class="section-nav">
+  <div class="nav-inner">
+    <button class="active" data-target="evaluator">Evaluator</button>
+    <button data-target="kaipf">Kai_PF</button>
+  </div>
+</nav>
+<main>
+  <section id="evaluator" class="active">
+    <a class="open-full" href="Eval_PF_180726_0930.html" target="_blank" rel="noopener">Open Evaluator in new tab &#8599;</a>
+    <iframe src="Eval_PF_180726_0930.html" title="Evaluator"></iframe>
+  </section>
+  <section id="kaipf">
+    <a class="open-full" href="Kai_OPTPF_180726_0928.html" target="_blank" rel="noopener">Open Kai_PF in new tab &#8599;</a>
+    <iframe src="Kai_OPTPF_180726_0928.html" title="Kai_PF"></iframe>
+  </section>
+</main>
+<footer>Optionx Hub &middot; Kai_X &middot; Built 18 Jul 2026</footer>
+<script>
+function showTab(name){
+  document.querySelectorAll('main section').forEach(s=>s.classList.toggle('active', s.id===name));
+  document.querySelectorAll('nav.section-nav button').forEach(b=>b.classList.toggle('active', b.dataset.target===name));
+}
+document.querySelectorAll('nav.section-nav button').forEach(b=>{
+  b.addEventListener('click', ()=>showTab(b.dataset.target));
+});
+</script>
 </body>
 </html>
