@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kai OPTPF &mdash; 22 Jul 2026</title>
+<style>
+:root{
+  --ft-salmon:#FFF1E0;--ft-red:#990F3D;--ft-blue:#0F5499;--ft-navy:#262A33;--ft-warm-blk:#33302E;
+  --ft-border:#CCB799;--ft-mid:#8D775F;--ft-muted:#66605A;--ft-card-bg:#FFFAF4;--ft-card-bdr:#D4A96A;--ft-gold:#F0A500;
+  --bg:var(--ft-salmon);--panel:var(--ft-card-bg);--border:var(--ft-border);--text:var(--ft-warm-blk);--dim:var(--ft-muted);
+  --green:#4B7F3D;--orange:#B5651D;--red:var(--ft-red);--yellow:#B8860B;--blue:var(--ft-blue);--purple:#7C5C99;--teal:#0D7680;
+}
+@media (prefers-color-scheme: dark){:root{--bg:#060d1a;--panel:#0d1a2e;--border:#1a2e4a;--text:#c8d8f0;--dim:#5a7a9a;--green:#4ade80;--orange:#f97316;--red:#ef4444;--yellow:#fbbf24;--blue:#38bdf8;--purple:#a78bfa;--teal:#2dd4bf;}}
+:root[data-theme="dark"]{--bg:#060d1a;--panel:#0d1a2e;--border:#1a2e4a;--text:#c8d8f0;--dim:#5a7a9a;--green:#4ade80;--orange:#f97316;--red:#ef4444;--yellow:#fbbf24;--blue:#38bdf8;--purple:#a78bfa;--teal:#2dd4bf;}
+:root[data-theme="light"]{--bg:var(--ft-salmon);--panel:var(--ft-card-bg);--border:var(--ft-border);--text:var(--ft-warm-blk);--dim:var(--ft-muted);--green:#4B7F3D;--orange:#B5651D;--red:var(--ft-red);--yellow:#B8860B;--blue:var(--ft-blue);--purple:#7C5C99;--teal:#0D7680;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.55;min-height:100vh;}
+.hdr{padding:10px 40px 9px;background:var(--ft-navy);color:#fff;border-bottom:4px solid var(--ft-red);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;flex-wrap:wrap;gap:8px;}
+.hdr h1{font-family:Georgia,serif;font-size:1.2rem;color:#fff;letter-spacing:.02em;font-weight:700;}
+.hdr h1::before{content:'Optionx Intelligence';display:block;font-family:Arial,sans-serif;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#AAAAAA;margin-bottom:2px;font-weight:400;}
+.stamp{font-family:Arial,sans-serif;font-size:11px;color:#CCCCCC;}
+.tabbar{display:flex;gap:0;padding:0 40px;background:var(--ft-navy);border-bottom:1px solid #44495A;flex-wrap:wrap;}
+.tab-btn{background:transparent;border:none;border-bottom:3px solid transparent;color:#AAAAAA;padding:8px 14px;cursor:pointer;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:all .15s;}
+.tab-btn:hover{color:#fff;}
+.tab-btn.active{color:#fff;background:transparent;border-bottom-color:var(--ft-red);}
+.tabpanel{display:none;}
+.tabpanel.active{display:block;}
+.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:16px 40px;max-width:1320px;margin:0 auto;}
+.card{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--ft-card-bdr);padding:10px 12px;}
+.card .lbl{font-family:Arial,sans-serif;font-size:9px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.card .val{font-family:Georgia,serif;font-size:17px;font-weight:700;}
+.card .sub{font-family:Arial,sans-serif;font-size:9px;color:var(--dim);margin-top:2px;}
+.sector-wrap{padding:0 40px 12px;max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.sector-panel{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--ft-card-bdr);padding:12px 14px;}
+.sector-panel h3{font-family:Arial,sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ft-mid);margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:700;}
+.sector-row{display:flex;align-items:center;padding:4px 0;border-bottom:1px solid rgba(11,11,11,.08);font-family:Arial,sans-serif;font-size:11px;}
+.sector-row:last-child{border-bottom:none;}
+.sbar-wrap{flex:1;margin:0 10px;height:5px;background:rgba(0,0,0,.06);border-radius:2px;overflow:hidden;}
+.sbar{height:100%;border-radius:2px;}
+.req-row{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px;}
+.req-badge{font-family:Arial,sans-serif;font-size:10px;padding:3px 9px;border-radius:2px;font-weight:700;letter-spacing:.02em;}
+.req-ok{background:#E3EDDB;color:#4B7F3D;}
+.req-miss{background:#F6DCE0;color:var(--ft-red);}
+.filters{display:flex;gap:6px;padding:8px 40px;max-width:1320px;margin:0 auto;flex-wrap:wrap;align-items:center;}
+.sep{color:var(--dim);font-family:Arial,sans-serif;font-size:10px;margin:0 3px;}
+button.fb{background:var(--panel);border:1px solid var(--border);color:var(--dim);padding:3px 9px;border-radius:2px;cursor:pointer;font-family:Arial,sans-serif;font-size:10px;font-weight:600;transition:all .15s;}
+button.fb.active{background:var(--ft-red);border-color:var(--ft-red);color:#fff;font-weight:700;}
+button.fb:hover:not(.active){border-color:var(--ft-red);color:var(--text);}
+.tw{padding:0 40px 12px;max-width:1320px;margin:0 auto;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-family:Arial,sans-serif;background:var(--panel);}
+th{background:var(--ft-navy);color:#fff;text-align:left;padding:7px 8px;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;cursor:pointer;user-select:none;font-weight:700;}
+th:hover{color:var(--ft-gold);}
+td{padding:5px 8px;border-bottom:1px solid rgba(11,11,11,.08);white-space:nowrap;font-size:11px;vertical-align:middle;font-variant-numeric:tabular-nums;}
+tr.CRITICAL td{background:#F6DCE0;}tr.CRITICAL td:first-child{border-left:3px solid var(--ft-red);}
+tr.HIGH td{background:#F3E0C9;}tr.HIGH td:first-child{border-left:3px solid #B5651D;}
+tr.WATCH td{background:#F5E8C8;}tr.WATCH td:first-child{border-left:3px solid #B8860B;}
+tr.LOW td:first-child{border-left:3px solid #4B7F3D;}
+tr:hover td{background:var(--ft-salmon)!important;}
+.rb{font-family:Arial,sans-serif;padding:2px 6px;border-radius:2px;font-size:9.5px;font-weight:700;letter-spacing:.02em;}
+.rb.CRITICAL{background:#990F3D;color:#fff;}
+.rb.HIGH{background:#B5651D;color:#fff;}
+.rb.WATCH{background:#B8860B;color:#fff;}
+.rb.LOW{background:#4B7F3D;color:#fff;}
+tfoot td{font-weight:700;color:var(--ft-red);border-top:2px solid var(--ft-navy);background:var(--panel);font-size:11px;}
+.footer{background:var(--ft-navy);color:#888;font-family:Arial,sans-serif;font-size:11px;text-align:center;padding:16px 40px;margin-top:20px;border-top:3px solid var(--ft-red);}
+.pane{padding:18px 40px;max-width:1320px;margin:0 auto;}
+.pane h2{font-family:Arial,sans-serif;font-size:11px;color:var(--ft-mid);letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:4px;}
+.pane .sub-note{font-family:Arial,sans-serif;font-size:10.5px;color:var(--dim);margin-bottom:14px;line-height:1.5;}
+.vb{font-family:Arial,sans-serif;padding:2px 7px;border-radius:2px;font-size:9.5px;font-weight:700;white-space:nowrap;letter-spacing:.02em;}
+.vb.BULLCONFIRM{background:#E3EDDB;color:#4B7F3D;}
+.vb.BULLSETUP{background:#DCEAE8;color:#0D7680;}
+.vb.KIV{background:#F5E8C8;color:#B8860B;}
+.vb.REJECT{background:#EDEAE4;color:var(--ft-mid);}
+.vb.ABORT{background:#F6DCE0;color:var(--ft-red);}
+.delta-up{color:#4B7F3D;font-weight:700;}
+.delta-down{color:#B5651D;font-weight:700;}
+.delta-flat{color:var(--dim);}
+.kiv-box{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--ft-gold);padding:12px 14px;margin-top:16px;}
+.kiv-box h3{font-family:Arial,sans-serif;font-size:10px;color:#B8860B;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-weight:700;}
+.kiv-box div{font-size:12px;padding:3px 0;color:var(--text);line-height:1.55;}
+.news-card{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--ft-card-bdr);padding:12px 14px;margin-bottom:10px;}
+.news-card .tk{font-family:Arial,sans-serif;color:var(--ft-red);font-weight:700;font-size:11px;margin-bottom:5px;display:inline-block;letter-spacing:.06em;}
+.news-card ul{margin:0;padding-left:18px;}
+.news-card li{font-size:12.5px;line-height:1.6;color:var(--text);margin-bottom:3px;}
+.neg-card{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--ft-red);padding:12px 14px;margin-bottom:10px;}
+.neg-card .tk{font-family:Arial,sans-serif;color:var(--ft-red);font-weight:700;font-size:11px;margin-bottom:5px;display:inline-block;letter-spacing:.06em;}
+.neg-card ul{margin:0;padding-left:18px;}
+.neg-card li{font-size:12.5px;line-height:1.6;color:var(--text);margin-bottom:3px;}
+.neg-card li b{color:#B5651D;}
+.macro-box{background:#EAF1F7;border:1px solid var(--border);border-left:3px solid var(--ft-blue);padding:12px 14px;margin-bottom:10px;font-size:12.5px;line-height:1.6;}
+.take-box{background:#F1ECF5;border:1px solid var(--border);border-left:3px solid #7C5C99;padding:12px 14px;margin-top:12px;font-size:12.5px;line-height:1.6;color:var(--text);}
+.take-box b{color:#7C5C99;}
+.portfolio-read{background:#F6DCE0;border:1px solid var(--border);border-left:3px solid var(--ft-red);padding:12px 14px;margin-top:12px;font-size:12.5px;line-height:1.6;}
+.sector-summary{padding:16px 40px 4px;max-width:1320px;margin:0 auto;}
+.sector-summary-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);font-family:Arial,sans-serif;}
+.sector-summary-table caption{font-family:Georgia,serif;font-size:13px;font-weight:700;color:var(--ft-red);text-align:left;letter-spacing:.02em;padding-bottom:7px;}
+.sector-summary-table th{background:var(--ft-navy);color:#fff;text-align:left;padding:7px 10px;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;}
+.sector-summary-table td{padding:7px 10px;font-size:11.5px;color:var(--text);border-bottom:1px solid var(--border);}
+.sector-summary-table tr:last-child td{border-bottom:none;}
+.sector-summary-table tr:nth-child(even) td{background:rgba(11,11,11,.03);}
+
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><h1>Kai <span style="color:var(--ft-gold)">OPTPF</span></h1><div style="font-family:Arial,sans-serif;font-size:10px;color:#AAAAAA;margin-top:3px;">TigerTrade Prime</div></div>
+  <div class="stamp">Data: 22 Jul 2026 08:42 SGT &middot; Built: 22 Jul 2026 09:20 SGT</div>
+</div>
+<div class="sector-summary">
+  <table class="sector-summary-table">
+    <caption>Sector &rarr; Ticker Map</caption>
+    <thead><tr><th>Sector</th><th>Tickers</th></tr></thead>
+    <tbody>
+      <tr><td>Con. Cyclical</td><td>AMZN</td></tr>
+      <tr><td>Con. Staples</td><td>PG</td></tr>
+      <tr><td>Energy</td><td>CVX, XOM</td></tr>
+      <tr><td>Healthcare</td><td>ABBV, AMGN, CVS</td></tr>
+      <tr><td>Technology</td><td>ADBE, ARM, CRWV, CSCO, HPE, MSFT, NBIS, NVDA, ORCL</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="tabbar">
+  <button class="tab-btn active" id="tabbtn-iv" onclick="showTab('iv')">&#9889; IV Check</button>
+  <button class="tab-btn" id="tabbtn-top7" onclick="showTab('top7')">&#128200; Top7 Summary</button>
+  <button class="tab-btn" id="tabbtn-news" onclick="showTab('news')">&#128240; News</button>
+  <button class="tab-btn" id="tabbtn-neg" onclick="showTab('neg')">&#128680; Negative Watch</button>
+</div>
+
+<!-- ============ TAB 1: IV CHECK ============ -->
+<div class="tabpanel active" id="tab-iv">
+<div class="pane">
+  <h2>/ivchk &mdash; Portfolio Tickers</h2>
+  <div class="sub-note">Source: IV_210726_0849.csv (latest UnusualWhales snapshot, extracted 08:49 SGT 21-Jul &mdash; no fresher IV export available at build time) &middot; 🔥 IV Rank &gt;70 &middot; &#9989; 50&ndash;70 &middot; &#9888;&#65039; &lt;50 premium capture read</div>
+  <div class="tw"><table>
+  <thead><tr>
+    <th>Ticker</th><th>Price</th><th>Chg%</th><th>P/C</th><th>IV Rank</th><th>Read</th><th>IV Impl</th><th>7D Impl%</th><th>7D Impl$</th><th>Earnings</th><th>Call Wall</th><th>Put Wall</th><th>Trend</th>
+  </tr></thead>
+  <tbody id="iv-tb"></tbody>
+  </table></div>
+  <div class="kiv-box">
+    <h3>&#9200; Earnings-Proximity Flags</h3>
+    <div>&#128680; <b style="color:var(--red)">ARM, MSFT, PG</b> all report earnings on <b>29-Jul-2026 &mdash; exactly 7 days out</b>, the threshold trigger. Potential IV expansion into the print; be cautious selling further option spreads on these names until earnings pass &mdash; treat any new setup here as premium-buying, not premium-selling. All three sit safely after the 24-Jul spread expiry, so existing open spreads are unaffected this cycle.</div>
+    <div style="margin-top:6px;">&#9989; No other portfolio ticker reports earnings within 0-7 days. Next nearest: AMZN (30-Jul, 8 days), ABBV/CVX/XOM (31-Jul, 9 days), AMGN (04-Aug), CVS (05-Aug), NBIS (06-Aug), CRWV (11-Aug), CSCO (12-Aug), NVDA (26-Aug), HPE (02-Sep), ORCL (08-Sep), ADBE (10-Sep).</div>
+  </div>
+</div>
+</div>
+
+<!-- ============ TAB 3: TOP7 SUMMARY ============ -->
+<div class="tabpanel" id="tab-top7">
+<div class="pane">
+  <h2>/top7 &mdash; 7-Day Confluence Summary</h2>
+  <div class="sub-note">Window: Jul 14 &ndash; Jul 22, 2026 (7 non-duplicate trading days per ticker, drawn from a 10-date candidate pool Jul 10&ndash;22) &middot; Jul 13 excluded portfolio-wide as a duplicate/stale weekend-carryover day (price identical to Jul 11) &middot; TIER/ENTRY driven by 7-Day Verdict &middot; RECENCY &Delta; flags re-check triggers &middot; HPE flagged for a Put Wall &gt; Call Wall inversion on Jul21-22</div>
+  <div class="tw"><table>
+  <thead><tr>
+    <th>Ticker</th><th>Price</th><th>Days</th><th>7-Day Verdict</th><th>Recency (2d)</th><th>&Delta;</th><th>Entry?</th><th>Key Finding</th>
+  </tr></thead>
+  <tbody id="top7-tb"></tbody>
+  </table></div>
+  <div class="kiv-box">
+    <h3>&#128204; Recency Re-check Watchlist</h3>
+    <div><b style="color:var(--blue)">CVX</b> &mdash; <span class="delta-up">Upgraded</span> (REJECT &rarr; BULL SETUP). 4/7 days Mark-down early week despite GEX+4 holding all 7 days; phase flipped to Mark-up/Strong uptrend for the last 4 sessions (Jul17-22), price $181.60&rarr;$191.07. A genuine, now-multi-day re-check trigger &mdash; closer to a confirmed bull read than a one-day blip, but not yet a 7-day BULL SETUP on its own.</div>
+    <div style="margin-top:8px;"><b style="color:var(--blue)">XOM</b> &mdash; <span class="delta-up">Upgraded</span> (REJECT &rarr; BULL SETUP). 3/7 days Mark-down early week despite GEX+4 holding all 7 days; phase flipped to Mark-up/Strong uptrend for the last 3 sessions (Jul18-22), price $144.51&rarr;$151.71, a fresh high for the window. Same re-check pattern as CVX &mdash; worth revisiting, not yet a confirmed 7-day bull name.</div>
+  </div>
+</div>
+</div>
+
+<!-- ============ TAB 4: NEWS ============ -->
+<div class="tabpanel" id="tab-news">
+<div class="pane">
+  <h2>@news-reporter &mdash; Portfolio Headlines</h2>
+  <div class="sub-note">Live news scan (Google News, 22-Jul-2026) &middot; NBIS/CRWV/ORCL carry today's live catalyst (Nvidia's 9.3% Nebius stake disclosure rippled across the whole neocloud/AI-cloud complex) &middot; ADBE/ARM/HPE/CRWV all carry fresh sell-side downgrades this week &middot; every earnings date in this book falls after the 24-Jul spread expiry &middot; ARM/MSFT/PG report soonest (29-Jul, 7 days out)</div>
+  <div id="news-cards"></div>
+  <div class="macro-box" id="macro-box"></div>
+  <div class="take-box" id="take-box"></div>
+</div>
+</div>
+
+<!-- ============ TAB 5: NEGATIVE WATCH ============ -->
+<div class="tabpanel" id="tab-neg">
+<div class="pane">
+  <h2>@news_investigator &mdash; Negative News Watch</h2>
+  <div class="sub-note">Risk-focused scan, window 8-Jul to 22-Jul-2026 (2-week recency cutoff; older items tagged OLDER) &middot; all 17 open spreads are short put credit spreads &mdash; downside headlines matter most here &middot; ORCL, MSFT, HPE, ADBE and CRWV carry today's most urgent flags</div>
+  <div id="neg-cards"></div>
+  <div class="portfolio-read" id="portfolio-read"></div>
+</div>
+</div>
+
+<script>
+const SECTOR={"ABBV": "Healthcare", "AMGN": "Healthcare", "CVS": "Healthcare", "ADBE": "Technology", "ARM": "Technology", "CRWV": "Technology", "CSCO": "Technology", "HPE": "Technology", "MSFT": "Technology", "NBIS": "Technology", "NVDA": "Technology", "ORCL": "Technology", "AMZN": "Con. Cyclical", "PG": "Con. Staples", "CVX": "Energy", "XOM": "Energy"};
+const SCOL={"Technology": "#0F5499", "Healthcare": "#4B7F3D", "Banking": "#7C5C99", "Con. Staples": "#B8860B", "Con. Cyclical": "#B5651D", "Industrials": "#0D7680", "Comm. Svcs": "#990F3D", "Energy": "#8a6d0a"};
+const GW={"ABBV": {"ph": "Mark-up", "gex": "Very Long", "gN": 4.0, "vol": "0.67x"}, "ADBE": {"ph": "Mark-down", "gex": "Very Long", "gN": 4.0, "vol": "0.72x"}, "AMGN": {"ph": "Mark-up", "gex": "Very Long", "gN": 4.0, "vol": "0.81x"}, "AMZN": {"ph": "Mark-down", "gex": "Very Long", "gN": 4.0, "vol": "0.71x"}, "ARM": {"ph": "Mark-down", "gex": "Very Short", "gN": -4.0, "vol": "0.70x"}, "CRWV": {"ph": "Mark-down", "gex": "Very Long", "gN": 4.0, "vol": "0.94x"}, "CSCO": {"ph": "Mark-up", "gex": "Very Long", "gN": 4.0, "vol": "0.89x"}, "CVS": {"ph": "Mark-up", "gex": "Very Long", "gN": 4.0, "vol": "0.96x"}, "CVX": {"ph": "Mark-up", "gex": "Very Long", "gN": 4.0, "vol": "0.76x"}, "HPE": {"ph": "Mark-up", "gex": "Very Long", "gN": 4.0, "vol": "0.74x"}, "MSFT": {"ph": "Mark-down", "gex": "Very Long", "gN": 4.0, "vol": "0.74x"}, "NBIS": {"ph": "Mark-up", "gex": "Very Short", "gN": -4.0, "vol": "1.24x"}, "NVDA": {"ph": "Mark-down", "gex": "Very Long", "gN": 4.0, "vol": "0.83x"}, "ORCL": {"ph": "Mark-down", "gex": "Very Long", "gN": 4.0, "vol": "1.12x"}, "PG": {"ph": "Mark-up", "gex": "Very Long", "gN": 4.0, "vol": "0.75x"}, "XOM": {"ph": "Mark-up", "gex": "Very Long", "gN": 4.0, "vol": "0.83x"}};
+function conf(ph,gN){
+  const b=ph.includes('up')||ph.includes('Acc');
+  if(b&&gN>0) return '✓ ALIGNED';
+  if(b&&gN<=0) return '⚠ MILD C';
+  if(!b&&gN>0) return '! CAUTION';
+  return '✗ HIGH C';
+}
+function risk(r,g){
+  if(r.cushion<0) return 'CRITICAL';
+  const b=g.ph.includes('up')||g.ph.includes('Acc');
+  if(g.gN<0&&r.cushion<3) return 'HIGH';
+  if(r.cushion<0.1&&r.dte<=8) return 'HIGH';
+  if(!b&&r.cushion<3&&r.dte<=2) return 'HIGH';
+  if(r.cushion<1&&r.dte<=8) return 'WATCH';
+  if(!b&&g.gN<0) return 'WATCH';
+  if(!b&&r.cushion<5) return 'WATCH';
+  return 'LOW';
+}
+const RAW=[{"t": "ABBV", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 245.0, "khi": 247.5, "qty": 1.0, "last": 256.1, "trd_px": 0.63, "mkt_px": 0.11, "iv": 28.42, "delta": 0.039, "gamma": -0.009, "cushion": 8.6, "buf": 3.36, "nexp": 4, "mgn": 250.0}, {"t": "AMGN", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 357.5, "khi": 360.0, "qty": 1.0, "last": 366.24, "trd_px": 0.73, "mkt_px": 0.66, "iv": 31.06, "delta": 0.059, "gamma": -0.005, "cushion": 6.24, "buf": 1.7, "nexp": 6, "mgn": 250.0}, {"t": "AMZN", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 237.5, "khi": 240.0, "qty": 1.0, "last": 246.7, "trd_px": 0.6, "mkt_px": 0.36, "iv": 34.25, "delta": 0.063, "gamma": -0.008, "cushion": 6.7, "buf": 2.72, "nexp": 6, "mgn": 250.0}, {"t": "ARM", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 262.5, "khi": 265.0, "qty": 2.0, "last": 292.54, "trd_px": 0.97, "mkt_px": 0.62, "iv": 120.06, "delta": 0.04, "gamma": 0.0, "cushion": 27.54, "buf": 9.41, "nexp": 4, "mgn": 500.0}, {"t": "CSCO", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 105.0, "khi": 107.0, "qty": 2.0, "last": 112.18, "trd_px": 0.66, "mkt_px": 0.15, "iv": 43.51, "delta": 0.128, "gamma": -0.036, "cushion": 5.18, "buf": 4.62, "nexp": 13, "mgn": 400.0}, {"t": "CVS", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 101.0, "khi": 103.0, "qty": 1.0, "last": 110.6, "trd_px": 0.48, "mkt_px": 0.04, "iv": 48.56, "delta": 0.049, "gamma": -0.012, "cushion": 7.6, "buf": 6.87, "nexp": 5, "mgn": 200.0}, {"t": "CVX", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 180.0, "khi": 182.5, "qty": 2.0, "last": 189.82, "trd_px": 0.54, "mkt_px": 0.13, "iv": 32.04, "delta": 0.062, "gamma": -0.02, "cushion": 7.32, "buf": 3.86, "nexp": 6, "mgn": 500.0}, {"t": "HPE", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 42.0, "khi": 44.0, "qty": 1.0, "last": 48.77, "trd_px": 0.54, "mkt_px": 0.39, "iv": 79.54, "delta": 0.124, "gamma": -0.034, "cushion": 4.77, "buf": 9.78, "nexp": 12, "mgn": 200.0}, {"t": "MSFT", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 375.0, "khi": 377.5, "qty": 1.0, "last": 396.01, "trd_px": 0.59, "mkt_px": 0.19, "iv": 41.1, "delta": 0.024, "gamma": -0.002, "cushion": 18.51, "buf": 4.67, "nexp": 2, "mgn": 250.0}, {"t": "MSFT", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 380.0, "khi": 382.5, "qty": 1.0, "last": 396.01, "trd_px": 0.73, "mkt_px": 0.33, "iv": 40.46, "delta": 0.032, "gamma": -0.002, "cushion": 13.51, "buf": 3.41, "nexp": 3, "mgn": 250.0}, {"t": "NBIS", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 167.5, "khi": 170.0, "qty": 2.0, "last": 220.98, "trd_px": 0.86, "mkt_px": 0.2, "iv": 172.53, "delta": 0.022, "gamma": -0.002, "cushion": 50.98, "buf": 23.07, "nexp": 2, "mgn": 500.0}, {"t": "NVDA", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 200.0, "khi": 205.0, "qty": 1.0, "last": 206.45, "trd_px": 1.14, "mkt_px": 1.23, "iv": 38.6, "delta": 0.193, "gamma": -0.017, "cushion": 1.45, "buf": 0.7, "nexp": 19, "mgn": 500.0}, {"t": "PG", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 147.0, "khi": 149.0, "qty": 2.0, "last": 148.1, "trd_px": 0.74, "mkt_px": 1.21, "iv": 29.99, "delta": 0.326, "gamma": 0.012, "cushion": -0.9, "buf": -0.61, "nexp": 33, "mgn": 400.0}, {"t": "XOM", "tp": "PUT", "exp": "24-Jul-26", "dte": 3, "klo": 147.0, "khi": 149.0, "qty": 1.0, "last": 151.43, "trd_px": 0.48, "mkt_px": 0.38, "iv": 29.85, "delta": 0.12, "gamma": -0.022, "cushion": 2.43, "buf": 1.6, "nexp": 12, "mgn": 200.0}, {"t": "ADBE", "tp": "PUT", "exp": "31-Jul-26", "dte": 10, "klo": 217.5, "khi": 220.0, "qty": 1.0, "last": 227.01, "trd_px": 0.73, "mkt_px": 0.72, "iv": 49.15, "delta": 0.049, "gamma": -0.001, "cushion": 7.01, "buf": 3.09, "nexp": 5, "mgn": 250.0}, {"t": "CRWV", "tp": "PUT", "exp": "31-Jul-26", "dte": 10, "klo": 70.0, "khi": 72.0, "qty": 2.0, "last": 81.81, "trd_px": 0.64, "mkt_px": 0.57, "iv": 110.43, "delta": 0.092, "gamma": -0.006, "cushion": 9.81, "buf": 11.99, "nexp": 9, "mgn": 400.0}, {"t": "ORCL", "tp": "PUT", "exp": "31-Jul-26", "dte": 10, "klo": 118.0, "khi": 120.0, "qty": 1.0, "last": 128.2, "trd_px": 0.64, "mkt_px": 0.34, "iv": 68.56, "delta": 0.044, "gamma": -0.002, "cushion": 8.2, "buf": 6.4, "nexp": 4, "mgn": 200.0}];
+
+const R=RAW.map(r=>{
+  const g=GW[r.t]||{ph:'N/A',gex:'N/A',gN:0,vol:'—'};
+  return{...r,sec:SECTOR[r.t]||'Other',wyck:g.ph,gex:g.gex,gN:g.gN,vol:g.vol,conf:conf(g.ph,g.gN),risk:risk(r,g)};
+});
+
+// ===== TAB SWITCHING =====
+function showTab(name){
+  ['iv','top7','news','neg'].forEach(n=>{
+    document.getElementById('tab-'+n).classList.toggle('active', n===name);
+    document.getElementById('tabbtn-'+n).classList.toggle('active', n===name);
+  });
+}
+
+// ===== IV CHECK TAB =====
+const IVDATA=[{"t": "ABBV", "price": 252.41, "chg": "-0.82%", "pc": "1", "ivr": 75, "ivi": "31.50%", "d7p": "3.50%", "d7d": "$8.83", "earn": "31/07/2026", "cw": "260.0", "pw": "250.0", "trend": "🚀 BULLISH"}, {"t": "ADBE", "price": 234.05, "chg": "-1.35%", "pc": "0.61", "ivr": 66, "ivi": "49.40%", "d7p": "5.10%", "d7d": "$11.94", "earn": "10/09/2026", "cw": "240.0", "pw": "225.0", "trend": "🌱 Greenshoots"}, {"t": "AMGN", "price": 363.59, "chg": "-0.74%", "pc": "1.03", "ivr": 95, "ivi": "35.50%", "d7p": "3.10%", "d7d": "$11.27", "earn": "04/08/2026", "cw": "375.0", "pw": "365.0", "trend": "🚀 BULLISH"}, {"t": "AMZN", "price": 249.45, "chg": "+0.90%", "pc": "0.41", "ivr": 73, "ivi": "43.10%", "d7p": "3.10%", "d7d": "$7.73", "earn": "30/07/2026", "cw": "255.0", "pw": "237.5", "trend": "👓 Second Test"}, {"t": "ARM", "price": 269.14, "chg": "+0.73%", "pc": "0.72", "ivr": 100, "ivi": "112.50%", "d7p": "12.80%", "d7d": "$34.45", "earn": "29/07/2026", "cw": "315.0", "pw": "315.0", "trend": "🔍 First Test"}, {"t": "CRWV", "price": 74.0, "chg": "+1.08%", "pc": "0.43", "ivr": 77, "ivi": "111.00%", "d7p": "10.50%", "d7d": "$7.77", "earn": "11/08/2026", "cw": "80.0", "pw": "80.0", "trend": ""}, {"t": "CSCO", "price": 110.68, "chg": "-1.13%", "pc": "0.47", "ivr": 100, "ivi": "53.10%", "d7p": "4.20%", "d7d": "$4.65", "earn": "12/08/2026", "cw": "121.0", "pw": "110.0", "trend": "🔍 First Test"}, {"t": "CVS", "price": 107.59, "chg": "+0.11%", "pc": "0.31", "ivr": 70, "ivi": "38.80%", "d7p": "3.20%", "d7d": "$3.44", "earn": "05/08/2026", "cw": "111.0", "pw": "107.0", "trend": "🚀 BULLISH"}, {"t": "CVX", "price": 190.14, "chg": "+1.47%", "pc": "0.47", "ivr": 82, "ivi": "30.60%", "d7p": "3.20%", "d7d": "$6.08", "earn": "31/07/2026", "cw": "180.0", "pw": "180.0", "trend": "🚀 BULLISH"}, {"t": "HPE", "price": 44.5, "chg": "-2.88%", "pc": "1.33", "ivr": 49, "ivi": "75.70%", "d7p": "7.60%", "d7d": "$3.38", "earn": "02/09/2026", "cw": "46.5", "pw": "48.5", "trend": "👓 Second Test"}, {"t": "MSFT", "price": 401.02, "chg": "+1.83%", "pc": "0.37", "ivr": 99, "ivi": "46.20%", "d7p": "3.40%", "d7d": "$13.63", "earn": "29/07/2026", "cw": "400.0", "pw": "390.0", "trend": "🔍 First Test"}, {"t": "NBIS", "price": 189.01, "chg": "+6.36%", "pc": "1.65", "ivr": 100, "ivi": "166.30%", "d7p": "16.00%", "d7d": "$30.24", "earn": "06/08/2026", "cw": "220.0", "pw": "170.0", "trend": "🔍 First Test"}, {"t": "NVDA", "price": 203.09, "chg": "+0.14%", "pc": "0.58", "ivr": 39, "ivi": "39.70%", "d7p": "3.40%", "d7d": "$6.91", "earn": "26/08/2026", "cw": "210.0", "pw": "200.0", "trend": "🔍 First Test"}, {"t": "ORCL", "price": 121.7, "chg": "-3.73%", "pc": "0.47", "ivr": 65, "ivi": "66.40%", "d7p": "6.80%", "d7d": "$8.28", "earn": "08/09/2026", "cw": "147.0", "pw": "120.0", "trend": ""}, {"t": "PG", "price": 149.16, "chg": "-0.54%", "pc": "0.3", "ivr": 81, "ivi": "26.80%", "d7p": "3.00%", "d7d": "$4.47", "earn": "29/07/2026", "cw": "157.5", "pw": "140.0", "trend": "🚀 BULLISH"}, {"t": "XOM", "price": 148.63, "chg": "+0.86%", "pc": "0.54", "ivr": 80, "ivi": "32.80%", "d7p": "3.30%", "d7d": "$4.90", "earn": "31/07/2026", "cw": "150.0", "pw": "140.0", "trend": "🚀 BULLISH"}];
+function ivReadEmoji(ivr){ if(ivr===null||ivr===undefined) return '—'; return ivr>70?'🔥':ivr>=50?'✅':'⚠️'; }
+function ivReadColor(ivr){ if(ivr===null||ivr===undefined) return 'var(--dim)'; return ivr>70?'var(--green)':ivr>=50?'var(--blue)':'var(--orange)'; }
+(function(){
+  const tb=document.getElementById('iv-tb');
+  IVDATA.forEach(r=>{
+    const tr=document.createElement('tr');
+    const chgCol=r.chg.startsWith('-')?'var(--red)':(r.chg==='—'?'var(--dim)':'var(--green)');
+    tr.innerHTML=`
+      <td style="font-weight:700;color:var(--blue)">${r.t}</td>
+      <td>${r.price!==null?'$'+r.price.toFixed(2):'—'}</td>
+      <td style="color:${chgCol}">${r.chg}</td>
+      <td style="color:var(--dim)">${r.pc}</td>
+      <td style="color:${ivReadColor(r.ivr)};font-weight:700">${r.ivr!==null?r.ivr:'—'}</td>
+      <td style="color:${ivReadColor(r.ivr)}">${ivReadEmoji(r.ivr)}</td>
+      <td style="color:var(--dim)">${r.ivi}</td>
+      <td style="color:var(--dim)">${r.d7p}</td>
+      <td style="color:var(--dim)">${r.d7d}</td>
+      <td style="color:var(--dim)">${r.earn}</td>
+      <td style="color:var(--dim)">$${r.cw}</td>
+      <td style="color:var(--dim)">$${r.pw}</td>
+      <td>${r.trend}</td>`;
+    tb.appendChild(tr);
+  });
+})();
+
+// ===== TOP7 SUMMARY TAB =====
+const TOP7=[{"t": "ABBV", "price": 256.1, "days": "7/10", "verdict": "BULL SETUP", "vcls": "BULLSETUP", "recency": "BULL SETUP", "delta": "Reinforced", "entry": "HOLD", "find": "Mark-up 7/7 + GEX+4 all week. Dipped to $244.11 (Jul16) before Strong uptrend resumed, rallying to $256.10 (Jul22). No Spring/SOS caps it at BULL SETUP."}, {"t": "ADBE", "price": 227.16, "days": "7/10", "verdict": "REJECT", "vcls": "REJECT", "recency": "REJECT", "delta": "Reinforced", "entry": "HIGH RISK", "find": "Only 3/7 bullish days — phase whipsawed Mark-down/Mark-up all week despite GEX holding +4 all 7 days. Fresh Morgan Stanley downgrade (21-Jul) coincides with today's reversion to Mark-down ($227.16). REJECT."}, {"t": "AMGN", "price": 366.24, "days": "7/10", "verdict": "BULL SETUP", "vcls": "BULLSETUP", "recency": "BULL SETUP", "delta": "Reinforced", "entry": "HOLD", "find": "Mark-up 7/7 + GEX+4 all week; ranged $355.25-$371.58, easing to $366.24 (Jul22). No Spring/SOS caps it at BULL SETUP."}, {"t": "AMZN", "price": 247.55, "days": "7/10", "verdict": "ABORT", "vcls": "ABORT", "recency": "ABORT", "delta": "Reinforced", "entry": "EXIT/AVOID", "find": "Mark-down bias (6/7 days, one Mark-up blip Jul16); GEX flipped +4→-4 Jul18 with price dropping $249.89→$247.23. Healed back to +4 by Jul21 ($249.99) and held Jul22 ($247.55), but phase stayed Mark-down both recovery days — flip still inside the recency window, so ABORT holds mechanically, not yet a clean all-clear."}, {"t": "ARM", "price": 289.73, "days": "7/10", "verdict": "REJECT", "vcls": "REJECT", "recency": "REJECT", "delta": "Reinforced", "entry": "HIGH RISK", "find": "Only 1/7 bullish days; GEX pinned Very Short (-4 to -3) 6/7 days — directly opposed to the open bullish put-credit spread. Price collapsed from $298.99 (Jul14) before a 7.5% pop to $289.73 (Jul22). REJECT."}, {"t": "CRWV", "price": 79.58, "days": "7/10", "verdict": "REJECT", "vcls": "REJECT", "recency": "REJECT", "delta": "Reinforced", "entry": "HIGH RISK", "find": "0/7 bullish days (Mark-down/Strong downtrend all week) despite GEX flipping to +4 the last 2 days (Jul21-22) as the stock rallied on Nvidia's Nebius-stake spillover. Phase hasn't confirmed the GEX flip yet. REJECT."}, {"t": "CSCO", "price": 112.18, "days": "7/10", "verdict": "ABORT", "vcls": "ABORT", "recency": "ABORT", "delta": "Reinforced", "entry": "EXIT/AVOID", "find": "TWO flip events this window — Jul16→17 (+4→-4) and Jul18→21 (+4→-4) — before recovering to +4 again today (Jul22, $112.18). A repeat-flip pattern despite a fundamentally strong tape (best week in ~25 years, HSBC 19% upside call). Live, unresolved technical risk — ABORT holds."}, {"t": "CVS", "price": 110.6, "days": "7/10", "verdict": "BULL SETUP", "vcls": "BULLSETUP", "recency": "BULL SETUP", "delta": "Reinforced", "entry": "HOLD", "find": "Mark-up 7/7 + GEX+4 all week, Strong uptrend most days, steady grind $105.90→$110.60 into fresh 52-week-high territory — steadiest name in the book."}, {"t": "CVX", "price": 191.07, "days": "7/10", "verdict": "REJECT", "vcls": "REJECT", "recency": "BULL SETUP", "delta": "Upgraded", "entry": "HIGH RISK", "find": "4/7 days Mark-down early week despite GEX+4 holding all 7 days; phase flipped to Mark-up/Strong uptrend the last 4 sessions (Jul17-22), price $181.60→$191.07. A genuine, now-multi-day re-check trigger — closer to a confirmed bull read than a one-day blip."}, {"t": "HPE", "price": 46.72, "days": "7/10", "verdict": "BULL SETUP", "vcls": "BULLSETUP", "recency": "BULL SETUP", "delta": "Reinforced", "entry": "HOLD", "find": "Mark-up 7/7 + GEX+4 all week (PINNED); but Put Wall ($48.5) now sits ABOVE Call Wall ($46.5) on both Jul21-22 — wall-inversion flag. Choppy $44.56-$49.56 range, easing to $46.72."}, {"t": "MSFT", "price": 397.75, "days": "7/10", "verdict": "REJECT", "vcls": "REJECT", "recency": "REJECT", "delta": "Reinforced", "entry": "HIGH RISK", "find": "0/7 bullish days despite GEX holding +4 (Very Long) every single day — a persistent phase/GEX conflict. Price ranged $384.93-$402.29, closing $397.75. Wide cushions (5.91%/4.66%) limit near-term breach risk. REJECT."}, {"t": "NBIS", "price": 216.92, "days": "7/10", "verdict": "REJECT", "vcls": "REJECT", "recency": "REJECT", "delta": "Reinforced", "entry": "HIGH RISK", "find": "Only 2/7 bullish days; GEX pinned Very Short (-4) ALL 7 days — even today's 19% Nvidia-stake-driven pop didn't flip GEX positive. Price ranged $171.77-$216.92 (+6.4% Wed). Wide 23.07% cushion (elevated IV) provides real room. REJECT."}, {"t": "NVDA", "price": 207.29, "days": "7/10", "verdict": "ABORT", "vcls": "ABORT", "recency": "ABORT", "delta": "Reinforced", "entry": "EXIT/AVOID", "find": "Gamma flip Jul16→17 (GEX+4→-4, price $212.50→$207.40) stayed Very Short through Jul21, then flipped back to +4 today (Jul22, $207.29) — only 1 day of recovery so far and phase is still Mark-down. Short strike effectively breached (cushion just $1.45/0.70%) — joint most-urgent name in the book alongside PG."}, {"t": "ORCL", "price": 127.05, "days": "7/10", "verdict": "REJECT", "vcls": "REJECT", "recency": "REJECT", "delta": "Reinforced", "entry": "HIGH RISK", "find": "0/7 bullish days (Strong downtrend most of the week, one Distribution/Upthrust(85%) BEAR CONFIRM day Jul18) despite GEX flipping to +4 the last 2 days (Jul21-22) alongside a fresh S&P credit downgrade to BBB-. Same unconfirmed-flip pattern as CRWV. REJECT."}, {"t": "PG", "price": 148.1, "days": "7/10", "verdict": "BULL SETUP", "vcls": "BULLSETUP", "recency": "BULL SETUP", "delta": "Reinforced", "entry": "HOLD", "find": "6/7 days Mark-up+GEX+4; single-day Distribution/Upthrust(85%) dip Jul15 fully recovered by Jul17 (high $151.50). Short strike ($149) is ALREADY BREACHED today (cushion -$0.90/-0.61%) — tightest, most urgent name in the book."}, {"t": "XOM", "price": 151.71, "days": "7/10", "verdict": "REJECT", "vcls": "REJECT", "recency": "BULL SETUP", "delta": "Upgraded", "entry": "HIGH RISK", "find": "3/7 days Mark-down early week despite GEX+4 holding all 7 days; phase flipped to Mark-up/Strong uptrend the last 3 sessions (Jul18-22), price $144.51→$151.71, a fresh high for the window. Same re-check pattern as CVX."}];
+function deltaClass(d){ return d==='Upgraded'?'delta-up':d==='Downgraded'?'delta-down':'delta-flat'; }
+function vcls(v){ return v.replace(/\s/g,''); }
+(function(){
+  const tb=document.getElementById('top7-tb');
+  TOP7.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td style="font-weight:700;color:var(--blue)">${r.t}</td>
+      <td>$${r.price.toFixed(2)}</td>
+      <td style="color:var(--dim)">${r.days}</td>
+      <td><span class="vb ${r.vcls}">${r.verdict}</span></td>
+      <td><span class="vb ${vcls(r.recency)}">${r.recency}</span></td>
+      <td class="${deltaClass(r.delta)}">${r.delta}</td>
+      <td style="color:var(--dim)">${r.entry}</td>
+      <td style="color:var(--text);white-space:normal;min-width:280px">${r.find}</td>`;
+    tb.appendChild(tr);
+  });
+})();
+
+// ===== NEWS TAB =====
+const NEWS=[{"t": "ABBV", "items": ["Q2 2026 earnings confirmed for Friday, 31-Jul-2026, before market open — after the 24-Jul spread expiry.", "Stock up ~9% YTD; some outlets call it \"fully priced\" after a 152% five-year run (14-Jul).", "Tepkinly EU approval and strong cash flow keep the bull case intact despite the valuation debate (16-Jul).", "Market cap jumped ~$43B in a single week amid a broader healthcare-sector rotation (30-Jun).", "AbbVie vs. Eli Lilly dividend-comparison pieces circulating; AbbVie framed as the stronger dividend pick (7-Jul)."]}, {"t": "ADBE", "items": ["Shares fell Tuesday 21-Jul after a fresh Morgan Stanley downgrade citing \"cleaner growth and AI monetization elsewhere.\"", "Second downgrade in ~10 days — Bank of America also cut its rating the prior week (11-Jul).", "Stock down ~62% from highs; bulls call it a bargain, bears call it a value trap — active debate as of 21-Jul.", "\"SaaSpocalypse fear fades\" counter-thesis circulating among bulls (17-Jul).", "Next earnings not until 10-Sep-2026 — no near-term catalyst to reset sentiment before then."]}, {"t": "AMGN", "items": ["Federal judge blocked a proposed 70% Enbrel price cap, lifting shares (2-Jul).", "Multiple institutions raised stakes this week — Andra AP fonden, Commerzbank, Swiss National Bank all added AMGN (19-21 Jul).", "CalPERS trimmed its Amgen position even as other institutions added (18-Jul).", "Earnings-preview pieces flag the stock as possibly overvalued heading into the print (~04-Aug earnings date).", "One outlet argues AMGN could be 47% undervalued post the Enbrel ruling (14-Jul)."]}, {"t": "AMZN", "items": ["Amazon Business sales topped $60B; Bezos-backed CuspAI investment also highlighted (21-Jul).", "Al Jazeera reported Iran struck Amazon's Bahrain data infrastructure — live geopolitical headline (21-Jul).", "Q2 2026 earnings confirmed for Thursday, 30-Jul-2026 — after the 24-Jul spread expiry.", "Amazon Business discounts saved organizations over $1B in 2025, per a new report (21-Jul).", "Bill Ackman called AMZN a \"cheap stock\" despite its size (21-Jul)."]}, {"t": "ARM", "items": ["Stock jumped ~6-7.5% on 21-Jul as Jefferies raised its price target on AI-chip demand.", "Wall Street flags a \"stretched valuation\" ahead of the 29-Jul print (16-Jul).", "Up 144% YTD; some outlets ask whether ARM is \"the next Nvidia\" (21-Jul).", "Earnings confirmed 29-Jul-2026 — after the 24-Jul spread expiry, so no earnings-gap risk this cycle.", "Prior HSBC downgrade (14-Jul) still overhangs sentiment despite this week's fresh target hikes."]}, {"t": "CRWV", "items": ["Nvidia's 9.3% Nebius stake disclosure lifted the whole neocloud group; CRWV +8-9% on 21-Jul.", "Truist upgraded CoreWeave to Buy the same day (21-Jul).", "Stock still down ~43-50% from its 52-week high after a 6-day, 19% losing streak into mid-Jul.", "Earnings due 11-Aug-2026 — capex/margin concerns persist into the print.", "Bull/bear split ongoing: one call sees 124% upside, another argues \"reposition value over momentum\" (20-21 Jul)."]}, {"t": "CSCO", "items": ["Stock logged its best week in ~25 years mid-Jul; HSBC sees a further 19% upside.", "Cybersecurity \"deal talk\" is boosting shares on M&A-premium speculation (16-17 Jul).", "Record highs reported 20-Jul on \"expectation-beating guidance\" plus a job-cut announcement.", "Some contrarian pieces argue \"3 reasons to sell CSCO\" despite the rally (21-Jul).", "Next earnings due 12-Aug-2026, after this book's near-term spread expiries."]}, {"t": "CVS", "items": ["Stock hit a fresh 52-week high (~$109) on 21-Jul.", "FTC/Caremark PBM settlement finalized mid-Jul, removing a multi-year litigation overhang.", "New nationwide pet-prescription rollout announced (21-Jul), part of the pharmacy-diversification push.", "Q2 2026 earnings confirmed for 05-Aug-2026.", "Some valuation pieces call CVS \"fully valued\" post-rally; consensus analyst tone still leans bullish."]}, {"t": "CVX", "items": ["Shut in US Gulf platform production ahead of a tropical storm (20-Jul).", "Analysts split: some call CVX \"fully priced\" after a 123-133% five-year run, others stay bullish.", "Q2 2026 earnings call set for Friday, 31-Jul-2026, 11:00am ET — after the 24-Jul expiry.", "Oil-price tailwind and cost cuts highlighted as shareholder positives this week (20-Jul).", "\"Chevron vs. ExxonMobil — which deserves a portfolio spot\" comparison pieces circulating (20-Jul)."]}, {"t": "HPE", "items": ["Shares +4.8-5% on 21-Jul as the AI-hardware group rebounds alongside Dell/Super Micro.", "New GTT partnership expansion cited as a possible re-rating catalyst (21-Jul).", "\"Networking is now the profit engine, nobody repriced it\" bull thesis circulating (21-Jul, Seeking Alpha).", "Juniper Networks stock steadied as investors weigh the pending HPE takeover outcome (19-Jul).", "Some valuation pieces flag a rich 42x trailing P/E despite the forward-earnings bull case (16-Jul)."]}, {"t": "MSFT", "items": ["Stock slipped after pledging billions to fund Mistral's AI buildout (21-Jul).", "Q4 FY2026 earnings set for 29-Jul-2026 — just after the 24-Jul spread window.", "Bank of America reiterated a bullish $500 price target despite near-term capex concerns (21-Jul).", "New securities-fraud class action filed over alleged Copilot functionality issues and a 10% stock drop (21-Jul).", "Stock still ~27% off its all-time high; some see a path back over $500 post-earnings."]}, {"t": "NBIS", "items": ["Stock surged ~19% on 21-Jul after Nvidia disclosed a 9.3% ownership stake.", "Multiple analysts upgraded price targets the same day on the Nvidia tie-up news.", "A new $1B AI compute deal was also disclosed alongside the stake news (21-Jul).", "Q2 2026 earnings confirmed for 06-Aug-2026.", "The move helps offset a rough two-week stretch of sector-wide neocloud selling into mid-Jul."]}, {"t": "NVDA", "items": ["Stock roughly flat since November despite net income tripling — a persistent valuation-lag narrative (20-Jul).", "Bank of America sees a \"next $20B business\" for Nvidia, keeping the bullish thesis alive (16-Jul).", "Nvidia's own Nebius-stake disclosure (21-Jul) lifted NVDA shares too, as an AI-ecosystem signal.", "Some analysts call NVDA \"remarkably cheap\" post beat-and-raise Q1, targeting a >$10T market cap (20-Jul).", "Q2 FY2027 earnings confirmed for 26-Aug-2026 — well after the 24-Jul expiry."]}, {"t": "ORCL", "items": ["Stock down ~37-38% YTD / ~50% from June highs on OpenAI-cloud-deal funding-model concerns.", "S&P downgraded Oracle's credit rating to BBB-, explicitly naming OpenAI as a risk factor (20-Jul).", "Mizuho sees 164% upside despite the slump; Michael Burry trimmed but kept his short (21-Jul).", "Credit risk sits near an 18-year high on AI-capex debt load (21-Jul).", "Stock +5% on 21-Jul as AI-cloud peers (Nebius, CoreWeave) rallied on the Nvidia-stake news."]}, {"t": "PG", "items": ["Board raised the dividend for the 70th consecutive year, declared 14-Jul (record 20-Jul, pay 17-Aug).", "Absorbed a ~$1B Middle East oil-price cost warning pressuring input costs.", "JPMorgan trimmed its price target to $162 from $164 on 18-Jul (kept Overweight).", "Q4 FY2026 earnings confirmed for 29-Jul-2026 — after the 24-Jul spread expiry.", "Analyst sentiment still leans bullish (majority Buy/Outperform, zero Sell ratings)."]}, {"t": "XOM", "items": ["Stock +2.1% on 21-Jul, outperforming the broader market.", "Q2 2026 earnings call set for 31-Jul-2026; CEO to review results live.", "Higher oil prices could add up to $5B to Q2 profit, per one estimate (18-Jul).", "Completed its planned move of legal HQ to Texas (effective 22-Jun).", "Some valuation pieces call XOM \"still a bargain\" after a 180-207% multi-year run."]}];
+(function(){
+  const el=document.getElementById('news-cards');
+  NEWS.forEach(n=>{
+    const lis=n.items.map(i=>`<li>${i}</li>`).join('');
+    el.innerHTML+=`<div class="news-card"><span class="tk">${n.t}</span><ul>${lis}</ul></div>`;
+  });
+  document.getElementById('macro-box').innerHTML="🌍 <b style=\"color:var(--blue)\">MACRO</b> &mdash; FOMC meets 28-29-Jul-2026, after this book's 24-Jul expiry; markets price only ~7.6-10% odds of a hike (CoinGape 21-Jul, quasa.io 16-Jul), so a hold is heavily favored despite hawkish rhetoric from new Fed Chair Kevin Warsh (\"prices are too high,\" 15-Jul) and swelling rate-hike chatter into the decision (Reuters, 17-Jul). Ironically, June CPI actually cooled to 3.5% YoY (14-Jul release) as gas prices fell &mdash; undercutting the hawkish case even as the debate persists. A live rotation theme is running underneath the mega-cap AI names: \"Small Caps Lead July 2026 Rally\" (15-Jul) and a broader \"Return of Value\" summer-rotation narrative (20-Jul) are drawing capital away from the AI-capex complex that dominates this book (MSFT, NVDA, ADBE, ORCL, ARM, CSCO, HPE, NBIS, CRWV). The macro backdrop itself is not recessionary &mdash; all seven S&amp;P sector PMIs expanded in June (qz.com, 6-Jul). The one live geopolitical wildcard is Iran: a reported strike on Amazon's Bahrain data infrastructure (21-Jul, Al Jazeera) and a fresh DOJ probe into Chevron tied to the same Iran-tension backdrop (9-Jul) both touch names in this book directly (AMZN, CVX). Every earnings date in this book falls after the 24-Jul spread expiry &mdash; ARM/MSFT/PG report soonest (29-Jul, 7 days out) &mdash; so there is no earnings-gap risk on any open spread this cycle, though IV should stay elevated into those three prints regardless.";
+  document.getElementById('take-box').innerHTML="🧠 <b>HEADY TAKE:</b> Two names are tied for most urgent in this book. <b style=\"color:var(--red)\">PG</b>'s short strike is already breached (cushion -$0.90/-0.61%) even as fundamentals stay rock-solid (70th consecutive dividend raise, majority Buy ratings) &mdash; this is pure proximity risk, not a news problem, and it needs the closest possible supervision into Thursday. <b style=\"color:var(--red)\">NVDA</b> is a close second &mdash; its 200/205 spread's cushion is down to just $1.45/0.70%, the Jul16-17 gamma flip only healed back to +4 today after 4 days Very Short, and phase is still technically Mark-down even as the news backdrop stays constructive (BofA's \"next $20B business\" call, a \"remarkably cheap\" post-earnings read). <b style=\"color:var(--orange)\">CSCO</b> carries the most persistent technical risk in the book &mdash; TWO separate gamma flips this window (Jul16-17 and Jul18-21) despite genuinely strong fundamentals (best week in ~25 years, HSBC's 19% upside call) &mdash; a pure positioning issue, not a news-driven one. <b style=\"color:var(--orange)\">ORCL</b> is the standout fresh-negative name on pure news grounds &mdash; S&amp;P's credit downgrade to BBB-, naming OpenAI explicitly as a risk, lands the same week its Wyckoff phase started flipping bullish (Jul21-22) on Nvidia-stake spillover; Michael Burry's still-live short adds a second bearish voice even as Mizuho calls for 164% upside. <b style=\"color:var(--orange)\">ARM</b> and <b style=\"color:var(--orange)\">NBIS</b> both sit in a genuine phase/GEX conflict &mdash; ARM's GEX has been Very Short 6 of 7 days despite this week's 6-7% AI-chip-demand rally, and NBIS's GEX stayed Very Short even through today's 19% Nvidia-stake-driven pop; both carry wide cushions that buy real time but the technical setup argues against the bullish spread thesis. On the constructive side, <b style=\"color:var(--teal)\">CVX</b> and <b style=\"color:var(--teal)\">XOM</b> are the standout re-check-upward names &mdash; both flipped to confirmed multi-day Mark-up/Strong-uptrend phases (CVX 4 days, XOM 3 days) with GEX holding +4 the entire window, and CVX's only fresh negative (a 9-Jul DOJ probe tied to Iran tensions) is offsettable against a constructive oil-price/cost-cut backdrop. <b style=\"color:var(--orange)\">HPE</b> is clean-to-mixed on top7 (BULL SETUP, no flip) but picked up both a wall inversion (put wall now above call wall) and a live DOJ suit against its Juniper deal plus a fresh downgrade &mdash; needs daily supervision on proximity AND headline grounds simultaneously. The \"get paid and relax\" cohort remains solid: <b style=\"color:var(--green)\">ABBV, AMGN, CVS</b> show clean-to-manageable news with every earnings date in the book falling after the 24-Jul expiry. Net-net: PG and NVDA need the closest daily supervision (one breached, one razor-thin with a barely-healed flip), CSCO and ORCL carry the most acute technical/credit risk respectively, ARM/NBIS are watch-and-hold names on a live phase/GEX conflict, and CVX/XOM are the two names worth actively re-checking for a genuine upgrade.";
+})();
+
+// ===== NEGATIVE WATCH TAB =====
+const NEG=[{"t": "ABBV", "items": ["<b style=\"color:var(--red)\">CURRENT (3-Jul)</b>: House Select Committee on China reiterated its formal inquiry into AbbVie's China clinical-trial site oversight — ongoing scrutiny, no resolution yet.", "<b>OLDER (8-Apr)</b>: AbbVie itself filed suit challenging an \"outdated\" 340B drug-discount eligibility program — not a claim against AbbVie, limited direct risk.", "<b>OLDER (17-Mar)</b>: A federal ruling allowed US overcharge claims against big drugmakers, including AbbVie, over low-income-patient medication pricing to proceed.", "No fresh earnings-miss or downgrade inside the 2-week window; the China-trial overhang is the only live thread."]}, {"t": "ADBE", "items": ["<b style=\"color:var(--red)\">CURRENT (21-Jul)</b>: Morgan Stanley downgraded Adobe, triggering a same-day share slide — cites better growth/AI monetization elsewhere.", "<b style=\"color:var(--red)\">CURRENT (11-Jul)</b>: Bank of America also cut its rating in the prior week — second major sell-side downgrade in ~10 days.", "<b>OLDER (26-May/19-May)</b>: Recurring shareholder-lawsuit solicitations (Shareholders Foundation) — a standing plaintiff-firm campaign, not a new filing.", "Two fresh analyst downgrades inside the 2-week window is the dominant negative theme here."]}, {"t": "AMGN", "items": ["<b style=\"color:var(--red)\">CURRENT (7-14 Jul)</b>: Nationwide recall of Corlanor and Sensipar over quality-control issues, reiterated across multiple outlets this week.", "<b>OLDER (13-Jun)</b>: $20.2M jury verdict against Amgen for willful antibody-patent infringement (Harbour BioMed) — just outside the 2-week window.", "<b>OLDER</b>: Tavneos EU-authorization regulatory tension remains a live, slow-burn overhang per ongoing coverage.", "No new analyst downgrade inside 2 weeks — Bernstein's downgrade dates to January and is stale."]}, {"t": "AMZN", "items": ["<b style=\"color:var(--red)\">CURRENT (21-Jul)</b>: Al Jazeera reported Iran struck Amazon's Bahrain AWS data infrastructure — live geopolitical/operational risk headline today.", "<b>OLDER (17-Jun)</b>: Possible FTC lawsuit over the $68.6B ad business's pricing/disclosure practices, penalties \"possibly billions\" — still unresolved, ~5 weeks old.", "<b>OLDER (18-May)</b>: Class action alleging AMZN illegally passed tariff costs onto consumers — no update since.", "The Feb-2026 $200B AI-capex guidance and earnings-miss reaction are stale (5+ months old) despite recurring in searches."]}, {"t": "ARM", "items": ["<b style=\"color:var(--red)\">CURRENT (14-16 Jul)</b>: HSBC downgraded ARM, calling the CPU narrative \"overdone\"; follow-on commentary questions whether the stock \"ran too far ahead.\"", "<b>OLDER (25-May/17-May)</b>: US antitrust/FTC probe into ARM's chip-licensing practices remains open and unresolved, but is 8+ weeks old with no fresh update this window.", "The HSBC downgrade is the freshest, most relevant negative catalyst heading into 29-Jul earnings."]}, {"t": "CRWV", "items": ["<b style=\"color:var(--red)\">CURRENT (15-16 Jul)</b>: At least two sell-side downgrades/target cuts this window, one tied to Meta-rivalry and chip-hedging pressure.", "<b style=\"color:var(--red)\">CURRENT</b>: Stock still down 43-49% from its 52-week high even after this week's Nvidia-driven bounce.", "<b>OLDER (29-Jun)</b>: Shareholder class-action solicitation (Shareholders Foundation) — a recurring plaintiff-firm notice, not a new filing.", "<b>OLDER (8-May)</b>: The original forecast miss that triggered the multi-week slide.", "Two fresh sell-side downgrades inside the window keep CRWV on watch despite today's Nvidia-linked bounce."]}, {"t": "CSCO", "items": ["No genuinely current (≤ 2-week) negative catalyst found. Supreme Court dismissed the Falun Gong-related lawsuit in Cisco's favor (23-Jun) — resolved, no longer a live risk.", "<b>OLDER (16-Jun)</b>: \"Everyone's pricing in the AI buildout\" valuation-caution piece — over a month old.", "Last hard earnings miss was the Feb-2026 gross-margin miss — over 5 months stale.", "Clean tape in the 2-week window; today's own repeat gamma-flip risk is technical/positioning, not news-driven."]}, {"t": "CVS", "items": ["<b style=\"color:var(--red)\">CURRENT (21-Jul)</b>: Henry Ford Health sued CVS alleging a $29M pricing scheme.", "<b>CURRENT (14-16 Jul)</b>: FTC/Caremark PBM settlement finalized — resolves a major overhang but confirms the underlying anticompetitive-practices allegations were real.", "<b>OLDER (23-24 Jun)</b>: Florida AG subpoenaed CVS in a pharmacy-competition probe — still open, unresolved, ~4 weeks old.", "Fresh Henry Ford Health lawsuit is the newest negative; the broader PBM legal cloud is easing (FTC settled) but not gone."]}, {"t": "CVX", "items": ["<b style=\"color:var(--red)\">CURRENT (9-Jul)</b>: DOJ probe into Chevron amid Iran tensions and record-profit scrutiny — sits just inside the 2-week window.", "<b>OLDER (24-25 Jun)</b>: Trump ordered a probe into Chevron/Exxon over gas \"price gouging\" — 4 weeks old, unresolved.", "<b>OLDER (8-Apr)</b>: \"CEO made $104M while America bombed Iran\" — reputational/headline risk, stale.", "The DOJ probe (9-Jul) is the freshest negative and the one genuinely live item this window."]}, {"t": "HPE", "items": ["<b style=\"color:var(--red)\">CURRENT (19-Jul)</b>: Fresh Seeking Alpha rating downgrade — \"demand is not the question, timing is.\"", "<b style=\"color:var(--red)\">CURRENT (ongoing)</b>: DOJ suit to block the Juniper Networks acquisition remains unresolved — live litigation, no near-term resolution.", "<b>OLDER (16-Jun)</b>: Sued over network-systems patents — 5 weeks old, unresolved.", "Live downgrade plus the unresolved Juniper antitrust suit remain the two real overhangs; also flagged for a put-wall &gt; call-wall inversion on top7 this week."]}, {"t": "MSFT", "items": ["<b style=\"color:var(--red)\">CURRENT (16-21 Jul)</b>: A wave of new securities-fraud class-action solicitations/reminders over alleged Copilot functionality issues and a 10% stock drop; multiple law firms (Schall, Levi &amp; Korsinsky, Kahn Swick &amp; Foti) active this week.", "<b>OLDER (29-Jun)</b>: EU \"gatekeeper\" designation move and an Italy antitrust probe — ~4 weeks old, unresolved.", "<b>OLDER (4-Mar)</b>: Melius/Stifel downgrade to Hold — stale, 4+ months old.", "The live, escalating securities-litigation campaign is the dominant negative thread this window."]}, {"t": "NBIS", "items": ["<b style=\"color:var(--red)\">CURRENT (17-Jul)</b>: Stock tumbled 5% after a Q4 revenue miss.", "<b>OLDER (1-Jul)</b>: \"Neocloud trade could turn shareholders into bagholders\" as NBIS cratered 17% — 3 weeks old, though the sector-wide unwind echoes persist.", "<b>OLDER (18-Jun/9-Jun)</b>: Seeking Alpha downgrade pieces (\"Time to sell... almost\", \"Please don't push it off the cliff\") — over a month old.", "Today's Nvidia-stake pop (21-Jul) is a major positive offset; most negative items here are 3+ weeks stale."]}, {"t": "NVDA", "items": ["No genuinely current (≤ 2-week) negative catalyst found this window. Most recent items are a French antitrust probe that closed favorably for NVDA (11-12 Jul) and a legacy Winamp patent lawsuit (22-Jun, stale).", "<b>OLDER (29-30 Jun)</b>: Taiwan raided Super Micro's offices in an NVIDIA AI-chip-smuggling probe — NVDA is tangential, not the target; 3+ weeks old.", "<b>OLDER (6-Jul)</b>: \"Jensen's Anti-ASICs Alliance\" rating-downgrade opinion piece — 2+ weeks old, softly negative/contrarian.", "Cleanest name in the book on the news side; today's Nebius-stake headline is a positive for NVDA, not a negative."]}, {"t": "ORCL", "items": ["<b style=\"color:var(--red)\">CURRENT (20-21 Jul)</b>: S&amp;P downgraded Oracle's credit rating to BBB-, explicitly naming OpenAI as a risk factor — fresh and material.", "<b style=\"color:var(--red)\">CURRENT (21-Jul)</b>: \"Oracle's credit risk nears an 18-year high\" — follow-on coverage of the downgrade.", "<b>CURRENT (13-Jul)</b>: Stock slumped further amid ongoing OpenAI-cloud-deal funding-model concerns.", "Michael Burry maintains an active short position (trimmed, not closed, 21-Jul) — sustained bearish positioning from a high-profile investor.", "The credit downgrade is the standout fresh negative, directly threatening the AI-capex funding narrative — the most acute legal/credit risk in the book alongside HPE's Juniper suit."]}, {"t": "PG", "items": ["<b style=\"color:var(--red)\">CURRENT (17-Jul)</b>: Shares down 1.1% following a fresh analyst downgrade.", "<b>OLDER (28-Jan)</b>: Class action alleging lead in Tampax Pearl tampons — nearly 6 months old, unresolved but stale.", "<b>OLDER (Nov-2025/Jan-2026)</b>: Kid's Crest toothpaste-packaging lawsuit allowed to proceed — old, slow-moving.", "Only the 17-Jul downgrade is genuinely fresh; legal overhangs are all several months old, independent of the razor-thin -0.61% cushion already breached technically."]}, {"t": "XOM", "items": ["No genuinely current (≤ 2-week) negative catalyst found. Most litigation this window actually resolved IN Exxon's favor (Supreme Court OK'd its Cuba property claim, 23-Jun; jury cleared Exxon in an investor lawsuit, 15-May).", "<b>OLDER (24-25 Jun)</b>: Trump-ordered gas-price \"gouging\" probe into Exxon/Chevron — unresolved but 4 weeks old.", "<b>OLDER (21-Apr)</b>: Wolfe Research downgrade to Peer Perform — 3 months old, stale.", "Cleanest name in the book alongside NVDA — no fresh negative catalysts this window."]}];
+(function(){
+  const el=document.getElementById('neg-cards');
+  NEG.forEach(n=>{
+    const lis=n.items.map(i=>`<li>${i}</li>`).join('');
+    el.innerHTML+=`<div class="neg-card"><span class="tk">${n.t}</span><ul>${lis}</ul></div>`;
+  });
+  document.getElementById('portfolio-read').innerHTML="⚠️ <b style=\"color:var(--red)\">PORTFOLIO-LEVEL READ</b> &mdash; Three risk threads sit on top of this book. The dominant one is an <b>analyst-downgrade wave hitting software/AI names</b> (ADBE with two downgrades in 10 days, ARM's HSBC cut, CRWV's multiple sell-side trims, HPE's fresh 19-Jul downgrade) running alongside a genuine <b>AI-capex funding-model scare</b> centered on ORCL (S&amp;P credit downgrade to BBB-, naming OpenAI explicitly, plus a live Michael Burry short). The second is a <b>live legal/regulatory drumbeat</b> (MSFT's escalating Copilot securities-class-action campaign, HPE's unresolved Juniper DOJ suit, CVS's fresh Henry Ford Health pricing suit, CVX's new DOJ Iran-tied probe, ABBV's ongoing China clinical-trial inquiry, AMGN's Corlanor/Sensipar recall) &mdash; mostly name-specific and several already stale, but MSFT's and HPE's are both live and unresolved right now. The third is a live <b>geopolitical thread</b>: Iran tensions resurfaced this week, directly touching AMZN (reported Bahrain data-center strike) and CVX (fresh DOJ probe). Reassuringly, every earnings date in this book falls <b>after</b> the 24-Jul spread expiry (ARM/MSFT/PG soonest, 29-Jul), so this specific window is earnings-gap-free.<br><br><b style=\"color:var(--green)\">Cleanest names:</b> NVDA and XOM &mdash; genuinely no fresh negative catalysts this window (NVDA's French probe closed in its favor; XOM's litigation actually resolved in its favor twice this quarter). CSCO is close behind on the news side, though its technical/gamma-flip risk is real. <br><br><b style=\"color:var(--red)\">Most exposed names:</b> ORCL (fresh credit downgrade directly threatening its AI-capex funding story, plus a live short from Michael Burry), MSFT (an escalating multi-firm securities-fraud campaign over Copilot), HPE (live downgrade + unresolved DOJ antitrust suit against its Juniper deal, plus a technical wall inversion), ADBE (two downgrades in 10 days), and CRWV (two fresh downgrades even after this week's Nvidia-linked bounce). PG and NVDA remain the two names with the most urgent <b>technical</b> exposure (one strike already breached, one razor-thin with a barely-healed gamma flip) even though neither carries a fresh negative headline this window.<br><br>Bottom line: ORCL, MSFT, HPE, ADBE and CRWV carry the most acute live negative catalysts heading into Thursday's 24-Jul expiry, while PG and NVDA remain the names with the most urgent technical/positioning exposure.";
+})();
+</script>
+</body>
+</html>
